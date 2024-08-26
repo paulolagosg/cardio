@@ -165,6 +165,7 @@
 @section('js')
 <script>
     $(document).ready(function() {
+        $('.select2').select2();
         obtener_comunas($('#id_region_bd').val());
         setTimeout(function() {
             $('#id_comuna').val($('#id_comuna_bd').val()); // Select the option with a value of '1'

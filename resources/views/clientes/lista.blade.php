@@ -41,6 +41,7 @@
                     <th class="sorting text-center">Coumna</th>
                     <th class="sorting text-center">Dirección</th>
                     <th class="sorting text-center">Teléfono</th>
+                    <th class="sorting text-center">Correo Electrónico</th>
                     <th class="sorting text-center">Acciones</th>
                 </tr>
                 <tr>
@@ -52,6 +53,7 @@
                     <th class="">Coumna</th>
                     <th class="">Dirección</th>
                     <th class="">Teléfono</th>
+                    <th class="">Correo Electrónico</th>
                     <th class="">Acciones</th>
                 </tr>
             </thead>
@@ -66,6 +68,7 @@
                     <td class="text-left">{{$d->comuna}}</td>
                     <td class="text-left">{{$d->direccion}}</td>
                     <td class="text-right">{{$d->telefono}}</td>
+                    <td class="text-right">{{$d->correo}}</td>
                     <td class="text-center"><a href="/clientes/editar/{{$d->slug}}"><i class="fa fa-edit text-dark"></i></a>&nbsp;
                         <a href="#" onclick="eliminar('/clientes/eliminar/',{{$d->id}})"><i class="fa fa-trash text-danger"></i></a>
                     </td>

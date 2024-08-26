@@ -34,7 +34,7 @@
                                         <select class="form-control select2" id="id_cliente" name="id_cliente" required>
                                             <option value="">Seleccione</option>
                                             @foreach($clientes as $c)
-                                            <option value="{{$c->id}}">{{$c->id}} - {{$c->nombre}}</option>
+                                            <option value="{{$c->id}}">{{$c->id}} - {{$c->nombre}} ({{$c->razon_social}})</option>
                                             @endforeach
                                         </select>
                                         <span id="error_rubro" class="error">Debe seleccionar un cliente</span>

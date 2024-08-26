@@ -33,7 +33,7 @@
                                         <select class="form-control select2" id="id_cliente" name="id_cliente" required disabled>
                                             <option value="">Seleccione</option>
                                             @foreach($clientes as $c)
-                                            <option value="{{$c->id}}">{{$c->id}} - {{$c->nombre}}</option>
+                                            <option value="{{$c->id}}">{{$c->id}} - {{$c->nombre}} ({{$c->razon_social}})</option>
                                             @endforeach
                                         </select>
                                         <span id="error_rubro" class="error">Debe seleccionar un cliente</span>
@@ -93,11 +93,13 @@
                                                                 <th class="text-center">Nombre</th>
                                                                 <th class="text-center">Lote</th>
                                                                 <th class="text-center">Vencimiento</th>
+                                                                <th class="text-center">Estado</th>
                                                             </tr>
                                                             <tr>
                                                                 <th>Nombre</th>
                                                                 <th>Lote</th>
                                                                 <th>Vencimiento</th>
+                                                                <th>Estado</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -106,6 +108,7 @@
                                                                 <td>{{$dispositivo->nombre}} - {{$dispositivo->marca}} - {{$dispositivo->modelo}}</td>
                                                                 <td>{{$dispositivo->lote}}</td>
                                                                 <td class="text-center" style="background-color:{{$dispositivo->color}}">{{$dispositivo->fecha}}</td>
+                                                                <td>{{$dispositivo->estado}}</td>
                                                             </tr>
                                                             @endforeach
                                                         </tbody>
@@ -136,17 +139,20 @@
                                                             <tr>
                                                                 <th class="text-center">Tipo</th>
                                                                 <th class="text-center">Vencimiento</th>
+                                                                <th class="text-center">Estado</th>
                                                             </tr>
                                                             <tr>
                                                                 <th>Nombre</th>
                                                                 <th>Vencimiento</th>
+                                                                <th>Estado</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             @foreach($mantenciones as $m)
                                                             <tr>
                                                                 <td>{{$m->tipo}}</td>
-                                                                <td class="text-center" style="background-color:{{$dispositivo->color}}">{{$m->fecha}}</td>
+                                                                <td class="text-center" style="background-color:{{$m->color}}">{{$m->fecha}}</td>
+                                                                <td class="text-center">{{$m->estado}}</td>
                                                             </tr>
                                                             @endforeach
                                                         </tbody>
@@ -198,22 +204,26 @@
                                     <option value="{{$tipo->id}}">{{$tipo->nombre}}</option>
                                     @endforeach
                                 </select>
+                                <span id="error_tproducto_modal" class="error">Debe seleccionar un tipo</span>
                                 <input type="hidden" id="id_trazabilidad" name="id_trazabilidad" value="{{$datos->id}}" />
                                 <input type="hidden" name="id_token" id="id_token" value="{{ csrf_token() }}" />
                             </div>
                             <div class="form-group">
-                                <label for="nombre">Dispositivo</label>
+                                <label for="nombre">Suministro</label>
                                 <select class="form-control select2" id="id_producto_d" name="id_producto_d" style="width:100%" required>
                                     <option value="">Seleccione</option>
                                 </select>
+                                <span id="error_suministro_modal" class="error">Debe seleccionar un suministro</span>
                             </div>
                             <div class="form-group">
                                 <label for="nombre">Lote</label>
                                 <input type="text" class="form-control" id="lote" name="lote" value="" required>
+                                <span id="error_lote_modal" class="error">Debe ingresar un lote</span>
                             </div>
                             <div class="form-group">
                                 <label for="nombre">Vencimiento</label>
                                 <input type="date" class="form-control  datepicker" id="vencimiento" name="vencimiento" value="" required>
+                                <span id="error_vencimiento_modal" class="error">Debe ingresar una fecha</span>
                             </div>
                         </div>
                     </div>
@@ -250,18 +260,20 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="nombre">Tipo</label>
-                                <select class="form-control select2" id="id_tipo_mantencion" name="id_tipo_mantencion" style="width:100%" required onchange="obtener_productos(this.value)">
+                                <select class="form-control select2" id="id_tipo_mantencion" name="id_tipo_mantencion" style="width:100%" required>
                                     <option value="">Seleccione</option>
                                     @foreach($tipos_mantenciones as $tipo)
                                     <option value="{{$tipo->id}}">{{$tipo->nombre}}</option>
                                     @endforeach
                                 </select>
+                                <span id="error_tipo_mantencion_modal" class="error">Debe seleccionar un tipo</span>
                                 <input type="hidden" id="id_trazabilidad" name="id_trazabilidad" value="{{$datos->id}}" />
                                 <input type="hidden" name="id_token_mp" id="id_token_mp" value="{{ csrf_token() }}" />
                             </div>
                             <div class="form-group">
                                 <label for="nombre">Fecha</label>
                                 <input type="date" class="form-control  datepicker" id="fecha_mantencion" name="fecha_mantencion" value="" required>
+                                <span id="error_fmantencion_modal" class="error">Debe ingresar una fecha</span>
                             </div>
                         </div>
                     </div>

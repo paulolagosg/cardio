@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\ClientesController;
+use App\Http\Controllers\EstadosMantencionesController;
+use App\Http\Controllers\EstadosVencimientosController;
 use App\Http\Controllers\MarcasController;
 use App\Http\Controllers\ModelosController;
+use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\RubrosController;
 use App\Http\Controllers\TipoProductosController;
@@ -23,6 +26,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/rubros/editar/{id}', [RubrosController::class, 'editar'])->name('rubros.editar');
     Route::post('/rubros/actualizar', [RubrosController::class, 'actualizar'])->name('rubros.actualizar');
     Route::get('/rubros/eliminar/{id}', [RubrosController::class, 'eliminar'])->name('rubros.eliminar');
+
+    Route::get('/estados_vencimientos/lista', [EstadosVencimientosController::class, 'index'])->name('estados_vencimientos.index');
+    Route::get('/estados_vencimientos/agregar', [EstadosVencimientosController::class, 'agregar'])->name('estados_vencimientos.agregar');
+    Route::post('/estados_vencimientos/crear', [EstadosVencimientosController::class, 'agregar_guardar'])->name('estados_vencimientos.crear');
+    Route::get('/estados_vencimientos/editar/{id}', [EstadosVencimientosController::class, 'editar'])->name('estados_vencimientos.editar');
+    Route::post('/estados_vencimientos/actualizar', [EstadosVencimientosController::class, 'actualizar'])->name('estados_vencimientos.actualizar');
+    Route::get('/estados_vencimientos/eliminar/{id}', [EstadosVencimientosController::class, 'eliminar'])->name('estados_vencimientos.eliminar');
+
+    Route::get('/estados_mantenciones/lista', [EstadosMantencionesController::class, 'index'])->name('estados_mantenciones.index');
+    Route::get('/estados_mantenciones/agregar', [EstadosMantencionesController::class, 'agregar'])->name('estados_mantenciones.agregar');
+    Route::post('/estados_mantenciones/crear', [EstadosMantencionesController::class, 'agregar_guardar'])->name('estados_mantenciones.crear');
+    Route::get('/estados_mantenciones/editar/{id}', [EstadosMantencionesController::class, 'editar'])->name('estados_mantenciones.editar');
+    Route::post('/estados_mantenciones/actualizar', [EstadosMantencionesController::class, 'actualizar'])->name('estados_mantenciones.actualizar');
+    Route::get('/estados_mantenciones/eliminar/{id}', [EstadosMantencionesController::class, 'eliminar'])->name('estados_mantenciones.eliminar');
 
     Route::get('/tipos_productos/lista', [TipoProductosController::class, 'index'])->name('tipos_productos.index');
     Route::get('/tipos_productos/agregar', [TipoProductosController::class, 'agregar'])->name('tipos_productos.agregar');
@@ -83,10 +100,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/trazabilidad/actualizar', [TrazabilidadController::class, 'actualizar'])->name('trazabilidad.actualizar');
     Route::get('/trazabilidad/eliminar/{id}', [TrazabilidadController::class, 'eliminar'])->name('trazabilidad.eliminar');
     Route::get('/trazabilidad/dispositivos/{id}', [TrazabilidadController::class, 'obtener_dispositivos'])->name('trazabilidad.dispositivos');
+    Route::get('/trazabilidad/cambiar_estado/{id}', [TrazabilidadController::class, 'cambiar_estado'])->name('trazabilidad.cambiar_estado');
+    Route::get('/trazabilidad/cambiar_estado_mantencion/{id}', [TrazabilidadController::class, 'cambiar_estado_mantencion'])->name('trazabilidad.cambiar_estado_mantencion');
     Route::post('/trazabilidad/guardar_dispositivo', [TrazabilidadController::class, 'guardar_dispositivo'])->name('trazabilidad.guardar_dispositivo');
     Route::post('/trazabilidad/guardar_mantencion', [TrazabilidadController::class, 'guardar_mantencion'])->name('trazabilidad.guardar_mantencion');
     Route::get('/trazabilidad/vencimientos/{meses?}', [TrazabilidadController::class, 'vencimientos'])->name('trazabilidad.vencimientos');
     Route::get('/trazabilidad/mantenciones/{meses?}', [TrazabilidadController::class, 'mantenciones'])->name('trazabilidad.mantenciones');
+
+    //Route::get('/pdf', [TrazabilidadController::class, 'pdf'])->name('trazabilidad.pdf');
+    Route::get('perfil/ver/{id?}', [PerfilController::class, 'index'])->name('perfil.ver');
+    Route::post('perfil/editar', [PerfilController::class, 'editar'])->name('perfil.editar');
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

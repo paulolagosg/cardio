@@ -67,7 +67,11 @@
                 <div class="icon">
                     <i class="ion ion-person-add"></i>
                 </div>
-                <a href="{{route('trazabilidad.vencimientos',6)}}" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
+                @if($mantenciones->anual > 0)
+                <a href="{{route('trazabilidad.vencimientos','a')}}" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
+                @else
+                <a href="#" onclick="alert('No hay información para mostrar')" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
+                @endif
             </div>
         </div>
         <div class="col-6">
@@ -80,7 +84,11 @@
                 <div class="icon">
                     <i class="ion ion-person-add"></i>
                 </div>
-                <a href="{{route('trazabilidad.vencimientos',6)}}" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
+                @if($mantenciones->sem > 0)
+                <a href="{{route('trazabilidad.vencimientos','s')}}" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
+                @else
+                <a href="#" onclick="alert('No hay información para mostrar')" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
+                @endif
             </div>
         </div>
     </div>

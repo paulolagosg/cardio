@@ -283,38 +283,75 @@ function guardar_mantencion(){
     fecha_mantencion: $('#fecha_mantencion').val(),
     _token: $('#id_token_mp').val(),
   };
-  $.ajax({
-      type: "post",
-      url: "/trazabilidad/guardar_mantencion",
-      data: data,
-      success: function(data) {
-          let error = data.split("error");
-          if (error[1]) {
-              $('#msgErrorM').show();
-              $('#msgErrorM').html(error[1]);
-              $('.alert-danger').fadeIn().delay(3000).fadeOut();
-          } else {
-              let OK = data.split("OK");
-              if (OK[1]) {
-                $('#id_tipo_mantencion').val(null).trigger('change');
-                $('#fecha_mantencion').val('');
-                $('#msgOKM').show();
-                $('#msgOKM').html(OK[1]);
-                $('.alert-success').fadeIn().delay(3000).fadeOut();
-              }
-          }
-      }
-  });
+  $('#error_tipo_mantencion_modal').hide();
+  $('#error_fmantencion_modal').hide();
+  let errores = 0;
+  if($('#fecha_mantencion').val() == ""){
+    errores++;
+    $('#error_fmantencion_modal').show();
+  }
+  if($('#id_tipo_mantencion').val() == ""){
+    errores++;
+    $('#error_tipo_mantencion_modal').show();
+  }
+
+  if(errores == 0){
+    $.ajax({
+        type: "post",
+        url: "/trazabilidad/guardar_mantencion",
+        data: data,
+        success: function(data) {
+            let error = data.split("error");
+            if (error[1]) {
+                $('#msgErrorM').show();
+                $('#msgErrorM').html(error[1]);
+                $('.alert-danger').fadeIn().delay(3000).fadeOut();
+            } else {
+                let OK = data.split("OK");
+                if (OK[1]) {
+                  $('#id_tipo_mantencion').val(null).trigger('change');
+                  $('#fecha_mantencion').val('');
+                  $('#msgOKM').show();
+                  $('#msgOKM').html(OK[1]);
+                  $('.alert-success').fadeIn().delay(3000).fadeOut();
+                }
+            }
+        }
+    });
+  }
 }
 function agregar_dispositivo(){
-        var data = {
-          id_tipo_producto: $('#id_tipo_producto').val(),
-          id_trazabilidad: $('#id_trazabilidad').val(),
-          id_producto: $('#id_producto_d').val(),
-          lote: $('#lote').val(),
-          vencimiento: $('#vencimiento').val(),
-          _token: $('#id_token').val(),
-        };
+  var data = {
+    id_tipo_producto: $('#id_tipo_producto').val(),
+    id_trazabilidad: $('#id_trazabilidad').val(),
+    id_producto: $('#id_producto_d').val(),
+    lote: $('#lote').val(),
+    vencimiento: $('#vencimiento').val(),
+    _token: $('#id_token').val(),
+  };
+  $('#error_tproducto_modal').hide();
+  $('#error_suministro_modal').hide();
+  $('#error_lote_modal').hide();
+  $('#error_vencimiento_modal').hide();
+  let errores = 0;
+  if($('#id_tipo_producto').val() == ""){
+    errores++;
+    $('#error_tproducto_modal').show();
+  }
+  if($('#id_producto_d').val() == ""){
+    errores++;
+    $('#error_suministro_modal').show();
+  }
+  if($('#lote').val() == ""){
+    errores++;
+    $('#error_lote_modal').show();
+  }
+  if($('#vencimiento').val() == ""){
+    errores++;
+    $('#error_vencimiento_modal').show();
+  }
+
+    if(errores == 0){
         $.ajax({
             type: "post",
             url: "/trazabilidad/guardar_dispositivo",
@@ -339,6 +376,7 @@ function agregar_dispositivo(){
                 }
             }
         });
+    }
 }
 
 
@@ -381,51 +419,23 @@ function guardar_tipo_producto(){
     }
 });
 }
-function maskIt(pattern, value) {
-    let position = 0;
-    let currentChar = 0;
-    let masked = '';
-    while(position < pattern.length && currentChar < value.length) {
-      if(pattern[position] === '0') {
-        masked += value[currentChar];
-        currentChar++;
-      } else {
-        masked += pattern[position];
-      }
-      position++;
-    }
-    return masked;
+
+function activaTab(tab){
+  $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+};
+
+function printErrores(texto) {
+  $(".print-error-msg").find("ul").html('');
+  $(".print-error-msg").show();
+  texto.forEach(function(elemento) {
+      $(".print-error-msg").find("ul").append('<li>' + elemento + '</li>');
+  });
 }
 
-function isNumeric(char) {
-    return !isNaN(char - parseInt(char));
+function printErrorMsg(msg) {
+  $(".print-error-msg").find("ul").html('');
+  $(".print-error-msg").show();
+  $.each(msg, function(key, value) {
+      $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
+  });
 }
-
-function numberCharactersPattern(pattern) {
-    let numberChars = 0;
-    for(let i = 0; i < pattern.length; i++) {
-      if(pattern[i] === '0') {
-        numberChars ++;
-      }
-    }
-    return numberChars;
-}
-
-function mascara_rut(elementId, mask) {
-    let inputElement = document.getElementById(elementId);
-    let content = '';
-    let maxChars = numberCharactersPattern(mask);
-    
-    inputElement.addEventListener('keydown', function(e) {
-      e.preventDefault();
-      if (isNumeric(e.key) && content.length < maxChars) {
-        content += e.key;
-      }
-      if(e.keyCode >= 8) {
-        if(content.length > 0) {
-          content = content.substr(0, content.length - 1);
-        }
-      }
-      inputElement.value = maskIt('00000000-0', content);
-    })
-  }

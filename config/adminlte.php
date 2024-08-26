@@ -325,42 +325,38 @@ return [
         //     'label' => 4,
         //     'label_color' => 'success',
         // ],
-        // ['header' => 'account_settings'],
-        // [
-        //     'text' => 'profile',
-        //     'url' => 'admin/settings',
-        //     'icon' => 'fas fa-fw fa-user',
-        // ],
+        ['header' => 'account_settings'],
+        [
+            'text' => 'profile',
+            'url' => 'perfil/ver',
+            'icon' => 'fas fa-fw fa-user',
+        ],
         // [
         //     'text' => 'change_password',
         //     'url' => 'admin/settings',
         //     'icon' => 'fas fa-fw fa-lock',
         // ],
+        ['header' => 'OPCIONES DEL SISTEMA'],
         [
             'text' => 'Parametros',
             'icon' => 'fas fa-fw fa-list',
             'class' => 'bg-',
             'submenu' => [
                 [
-                    'text' => 'Rubros',
-                    'url' => 'rubros/lista',
-                    'active' => ['rubros/editar', 'rubros/agregar', 'regex:@^rubros/editar/[A-Za-z0-9-]+$@',],
-                ],
-                [
-                    'text' => 'Tipo de Productos',
-                    'url' => 'tipos_productos/lista',
-                    'active' => ['tipos_productos/editar', 'tipos_productos/agregar', 'regex:@^tipos_productos/editar/[A-Za-z0-9-]+$@',],
-                ],
-                [
-                    'text' => 'Tipo de Mantenciones',
-                    'url' => 'tipos_mantenciones/lista',
-                    'active' => ['tipos_mantenciones/editar', 'tipos_mantenciones/agregar', 'regex:@^tipos_mantenciones /editar/[A-Za-z0-9-]+$@',],
-                ],
-                [
                     'text' => 'Clientes',
                     'url' => 'clientes/lista',
                     'active' => ['clientes/editar', 'clientes/agregar', 'regex:@^clientes/editar/[A-Za-z0-9-]+$@',],
                 ],
+                // [
+                //     'text' => 'Estados Vencimientos',
+                //     'url' => 'estados_vencimientos/lista',
+                //     'active' => ['estados_vencimientos/editar', 'estados_vencimientos/agregar', 'regex:@^estados_vencimientos/editar/[A-Za-z0-9-]+$@',],
+                // ],
+                // [
+                //     'text' => 'Estados Mantenciones',
+                //     'url' => 'estados_mantenciones/lista',
+                //     'active' => ['estados_mantenciones/editar', 'estados_mantenciones/agregar', 'regex:@^estados_mantenciones/editar/[A-Za-z0-9-]+$@',],
+                // ],
                 [
                     'text' => 'Marcas',
                     'url' => 'marcas/lista',
@@ -376,26 +372,41 @@ return [
                     'url' => 'productos/lista',
                     'active' => ['productos/editar', 'productos/agregar', 'regex:@^productos/editar/[A-Za-z0-9-]+$@',],
                 ],
-            ],
-        ],
-        [
-            'text' => 'Cotizaciones',
-            'icon' => 'fas fa-fw fa-copy',
-            'class' => 'bg-',
-            'submenu' => [
                 [
-                    'text' => 'Nueva Cotización',
-                    'url' => 'r#',
-                    'icon' => 'fas fa-fw fa-plus',
-                    'active' => ['cotizaciones/editar', 'cotizaciones/agregar', 'regex:@^cotizaciones/editar/[A-Za-z0-9-]+$@',],
+                    'text' => 'Rubros',
+                    'url' => 'rubros/lista',
+                    'active' => ['rubros/editar', 'rubros/agregar', 'regex:@^rubros/editar/[A-Za-z0-9-]+$@',],
                 ],
                 [
-                    'text' => 'Historial Cotizaciones',
-                    'icon' => 'fas fa-fw fa-bars',
-                    'url' => '#',
+                    'text' => 'Tipo de Productos',
+                    'url' => 'tipos_productos/lista',
+                    'active' => ['tipos_productos/editar', 'tipos_productos/agregar', 'regex:@^tipos_productos/editar/[A-Za-z0-9-]+$@',],
+                ],
+                [
+                    'text' => 'Tipo de Mantenciones',
+                    'url' => 'tipos_mantenciones/lista',
+                    'active' => ['tipos_mantenciones/editar', 'tipos_mantenciones/agregar', 'regex:@^tipos_mantenciones /editar/[A-Za-z0-9-]+$@',],
                 ],
             ],
         ],
+        // [
+        //     'text' => 'Cotizaciones',
+        //     'icon' => 'fas fa-fw fa-copy',
+        //     'class' => 'bg-',
+        //     'submenu' => [
+        //         [
+        //             'text' => 'Nueva Cotización',
+        //             'url' => 'r#',
+        //             'icon' => 'fas fa-fw fa-plus',
+        //             'active' => ['cotizaciones/editar', 'cotizaciones/agregar', 'regex:@^cotizaciones/editar/[A-Za-z0-9-]+$@',],
+        //         ],
+        //         [
+        //             'text' => 'Historial Cotizaciones',
+        //             'icon' => 'fas fa-fw fa-bars',
+        //             'url' => '#',
+        //         ],
+        //     ],
+        // ],
         [
             'text' => 'Trazabilidad',
             'icon' => 'fas fa-fw fa-exclamation-triangle',
@@ -404,18 +415,20 @@ return [
                 [
                     'text' => 'Nuevo Registro Con Cliente Existente',
                     'url' => 'trazabilidad/agregar',
-                    'icon' => 'fas fa-fw fa-plus',
-                    'active' => ['trazabilidad/editar', 'trazabilidad/agregar', 'regex:@^trazabilidad/editar/[A-Za-z0-9-]+$@',],
+                    'icon' => 'fas fa-fw fa-user-circle',
+                    //'active' => ['trazabilidad/editar', 'trazabilidad/agregar', 'regex:@^trazabilidad/editar/[A-Za-z0-9-]+$@',],
+                    'active' => ['trazabilidad/agregar'],
                 ],
                 [
                     'text' => 'Nuevo Registro Sin Cliente Existente',
                     'url' => 'trazabilidad/agregar_sc',
-                    'icon' => 'fas fa-fw fa-plus',
-                    'active' => ['trazabilidad/editar', 'trazabilidad/agregar', 'regex:@^trazabilidad/editar/[A-Za-z0-9-]+$@',],
+                    'icon' => 'fas fa-fw fa-plus-circle',
+                    //'active' => ['trazabilidad/editar', 'trazabilidad/agregar', 'regex:@^trazabilidad/editar/[A-Za-z0-9-]+$@',],
+                    'active' => ['trazabilidad/agregar_sc'],
                 ],
                 [
                     'text' => 'Vencimientos',
-                    'icon' => 'fas fa-fw fa-exclamation',
+                    'icon' => 'fas fa-fw fa-exclamation-triangle',
                     'url' => '/trazabilidad/vencimientos',
                     'active' => ['regex:@^trazabilidad/vencimientos/[A-Za-z0-9-]+$@'],
                 ],
