@@ -51,8 +51,8 @@
                     <td class="text-right">{{$d->id}}</td>
                     <td class="text-left">{{$d->nombre}}</td>
                     <td class="text-left">{{$d->marca}}</td>
-                    <td class="text-center"><a href="/modelos/editar/{{$d->slug}}"><i class="fa fa-edit text-dark"></i></a>&nbsp;
-                        <a href="#" onclick="eliminar('/modelos/eliminar/',{{$d->id}})"><i class="fa fa-trash text-danger"></i></a>
+                    <td class="text-center"><a href="/modelos/editar/{{$d->slug}}"><i class="fa fa-edit text-dark" data-toggle="tooltip" data-placement="top" title="Modificar"></i></a>&nbsp;
+                        <a href=" #" onclick="eliminar('/modelos/eliminar/',{{$d->id}})"><i class="fa fa-trash text-danger" data-toggle="tooltip" data-placement="top" title="Eliminar"></i></a>
                     </td>
                 </tr>
                 @endforeach
@@ -62,7 +62,7 @@
     </div>
 </div>@stop
 @section('css')
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
+<link rel=" stylesheet" href="//cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
 
 
 <style>
@@ -128,6 +128,7 @@
         });
 
     });
+    $('[data-toggle="tooltip"]').tooltip();
 </script>
 
 

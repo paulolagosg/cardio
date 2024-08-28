@@ -180,8 +180,8 @@ class TrazabilidadController extends Controller
                         when  (EXTRACT(YEAR FROM trazabilidad_productos.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
        (EXTRACT(MONTH FROM trazabilidad_productos.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) between 2 and 3 then 'orange'
                         when  (EXTRACT(YEAR FROM trazabilidad_productos.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
-       (EXTRACT(MONTH FROM trazabilidad_productos.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) between 0 and 1 then  'red' 
-                        else 'green'
+       (EXTRACT(MONTH FROM trazabilidad_productos.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) between 0 and 1 then  'red;color:#fff' 
+                        else 'green;color:#fff'
                     end as color")
             )
             ->where('trazabilidad_productos.id_trazabilidad', $datos->id)
@@ -200,8 +200,8 @@ class TrazabilidadController extends Controller
                 DB::raw("case when  (EXTRACT(YEAR FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
        (EXTRACT(MONTH FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) between 7 and 12 then 'orange'
                         when  (EXTRACT(YEAR FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
-       (EXTRACT(MONTH FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) <= 6 then  'red' 
-                        else 'green'
+       (EXTRACT(MONTH FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) <= 6 then  'red;color:#fff' 
+                        else 'green;color:#fff'
                     end as color")
             )
             ->where('trazabilidad_mantenciones.id_trazabilidad', $datos->id)
@@ -370,8 +370,8 @@ class TrazabilidadController extends Controller
                         when  (EXTRACT(YEAR FROM trazabilidad_productos.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
        (EXTRACT(MONTH FROM trazabilidad_productos.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) between 2 and 3 then 'orange'
                         when  (EXTRACT(YEAR FROM trazabilidad_productos.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
-       (EXTRACT(MONTH FROM trazabilidad_productos.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) <= 1 then 'red' 
-                        else 'green'
+       (EXTRACT(MONTH FROM trazabilidad_productos.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) <= 1 then 'red;color:#fff' 
+                        else 'green;color:#fff'
                     end as color")
             )->orderBy('trazabilidad_productos.vencimiento', 'DESC')->get();
 
@@ -396,8 +396,8 @@ class TrazabilidadController extends Controller
                 DB::raw("case when  (EXTRACT(YEAR FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
        (EXTRACT(MONTH FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) between 7 and 12 then 'orange'
                         when  (EXTRACT(YEAR FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
-       (EXTRACT(MONTH FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) <= 6 then 'red' 
-                        else 'green'
+       (EXTRACT(MONTH FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) <= 6 then 'red;color:#fff' 
+                        else 'green;color:#fff'
                     end as color")
             )->orderBy('trazabilidad_mantenciones.vencimiento', 'DESC')->get();
 
@@ -440,8 +440,8 @@ class TrazabilidadController extends Controller
                         when  (EXTRACT(YEAR FROM trazabilidad_productos.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
        (EXTRACT(MONTH FROM trazabilidad_productos.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) between 2 and 3 then 'orange'
                         when  (EXTRACT(YEAR FROM trazabilidad_productos.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
-       (EXTRACT(MONTH FROM trazabilidad_productos.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) <= 1 then 'red' 
-                        else 'green'
+       (EXTRACT(MONTH FROM trazabilidad_productos.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) <= 1 then 'red;color:#fff' 
+                        else 'green;color:#fff'
                     end as color")
             )->orderBy('trazabilidad_mantenciones.vencimiento', 'DESC')->get();
 

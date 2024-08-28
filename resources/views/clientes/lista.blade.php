@@ -69,8 +69,8 @@
                     <td class="text-left">{{$d->direccion}}</td>
                     <td class="text-right">{{$d->telefono}}</td>
                     <td class="text-right">{{$d->correo}}</td>
-                    <td class="text-center"><a href="/clientes/editar/{{$d->slug}}"><i class="fa fa-edit text-dark"></i></a>&nbsp;
-                        <a href="#" onclick="eliminar('/clientes/eliminar/',{{$d->id}})"><i class="fa fa-trash text-danger"></i></a>
+                    <td class="text-center"><a href="/clientes/editar/{{$d->slug}}"><i class="fa fa-edit text-dark" data-toggle="tooltip" data-placement="top" title="Modificar"></i></a>&nbsp;
+                        <a href="#" onclick="eliminar('/clientes/eliminar/',{{$d->id}})"><i class="fa fa-trash text-danger" data-toggle="tooltip" data-placement="top" title="Eliminar"></i></a>
                     </td>
                 </tr>
                 @endforeach
@@ -147,6 +147,7 @@
         });
 
     });
+    $('[data-toggle="tooltip"]').tooltip();
 </script>
 
 

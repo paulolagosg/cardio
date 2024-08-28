@@ -57,17 +57,17 @@
                                     </thead>
                                     <tbody>
                                         @foreach($vencimientos as $v)
-                                        <tr>
+                                        <tr @if($v->id_estado != 1) style="background-color:#d2d2d2 !important" @endif>
                                             <td>{{$v->cliente}}</td>
                                             <td>{{$v->nombre}} - {{$v->marca}} - {{$v->modelo}}</td>
                                             <td>{{$v->lote}}</td>
                                             <td>{{$v->ubicacion}}</td>
-                                            <td class="text-center" style="background-color: {{$v->color}};">{{$v->fecha}}</td>
+                                            <td class="text-center" @if($v->id_estado == 1) style="background-color: {{$v->color}};" @endif>{{$v->fecha}}</td>
                                             <td>{{$v->estado}}</td>
                                             <td class="text-center">
                                                 <a href="{{route('trazabilidad.editar',$v->slug)}}"><i class="fa fa-eye text-dark" data-toggle="tooltip" data-placement="top" title="Ver"></i></a>
                                                 @if($v->id_estado == 1)
-                                                &nbsp;&nbsp;<a href="{{route('trazabilidad.cambiar_estado',$v->id)}}"><i class="fa fa-ban text-dark" data-toggle="tooltip" data-placement="top" title="Marcar como Obsoleto"></i></a>
+                                                &nbsp;&nbsp;<a href="#" onclick="cambiar_estado('/trazabilidad/cambiar_estado',{{$v->id}})"><i class="fa fa-times-circle text-dark" data-toggle="tooltip" data-placement="top" title="Marcar como Obsoleto"></i></a>
                                                 @endif
                                             </td>
                                         </tr>
@@ -105,15 +105,15 @@
                                     </thead>
                                     <tbody>
                                         @foreach($mantenciones as $m)
-                                        <tr>
+                                        <tr @if($m->id_estado != 1) style="background-color:#d2d2d2;" @endif>
                                             <td>{{$m->cliente}}</td>
                                             <td>{{$m->tipo}}</td>
-                                            <td class="text-center" style="background-color: {{$m->color}};">{{$m->fecha}}</td>
+                                            <td class="text-center" @if($m->id_estado == 1) style="background-color: {{$m->color}};" @endif>{{$m->fecha}}</td>
                                             <td>{{$m->estado}}</td>
                                             <td class="text-center">
                                                 <a href="{{route('trazabilidad.editar',$m->slug)}}"><i class="fa fa-eye text-dark" data-toggle="tooltip" data-placement="top" title="Ver"></i></a>
                                                 @if($m->id_estado == 1)
-                                                &nbsp;&nbsp;<a href="{{route('trazabilidad.cambiar_estado_mantencion',$m->id)}}"><i class="fa fa-check-circle text-dark" data-toggle="tooltip" data-placement="top" title="Marcar como Realizada"></i></a>
+                                                &nbsp;&nbsp;<a href="#" onclick="cambiar_estado('/trazabilidad/cambiar_estado_mantencion',{{$m->id}})"><i class="fa fa-check-circle text-dark" data-toggle="tooltip" data-placement="top" title="Marcar como Realizada"></i></a>
                                                 @endif
                                             </td>
                                         </tr>

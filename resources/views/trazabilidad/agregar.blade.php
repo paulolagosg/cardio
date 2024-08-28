@@ -37,7 +37,7 @@
                                             <option value="{{$c->id}}">{{$c->id}} - {{$c->nombre}} ({{$c->razon_social}})</option>
                                             @endforeach
                                         </select>
-                                        <span id="error_rubro" class="error">Debe seleccionar un cliente</span>
+                                        <span id="error_cliente" class="error">Debe seleccionar un cliente</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -49,7 +49,7 @@
                                             <option value="{{$d->id}}">{{$d->nombre}}</option>
                                             @endforeach
                                         </select>
-                                        <span id="error_rubro" class="error">Debe seleccionar un cliente</span>
+                                        <span id="error_dea" class="error">Debe seleccionar un DEA</span>
                                     </div>
                                 </div>
                             </div>
@@ -58,15 +58,15 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="nombre">Ubicación Exacta del Equipo</label> <label class="obligatorio">*</label>
-                                        <input class="form-control" type="text" id="ubicacion" name="ubicacion" value="" />
-                                        <span id="error_giro" class="error">Debe ingresar una ubicación</span>
+                                        <input class="form-control" type="text" id="ubicacion" name="ubicacion" value="" required />
+                                        <span id="error_ubicacion" class="error">Debe ingresar una ubicación</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="nombre">Número de Serie</label> <label class="obligatorio">*</label>
-                                        <input class="form-control" type="text" id="numero_serie" name="numero_serie" value="" />
-                                        <span id="error_giro" class="error">Debe ingresar un numero de serie</span>
+                                        <input class="form-control" type="text" id="numero_serie" name="numero_serie" value="" required />
+                                        <span id="error_serie" class="error">Debe ingresar un numero de serie</span>
                                     </div>
                                 </div>
                             </div>
@@ -106,7 +106,7 @@
 
                     </div>
                     <div>
-                        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Agregar</button>
+                        <button type="button" onclick="trazabilidad_con_cliente()" class="btn btn-success"><i class="fa fa-save"></i> Agregar</button>
                         <a href="{{route('trazabilidad.vencimientos')}}" class="btn text-white" style="background-color: #87161b"><i class="fa fa-ban"></i> Cancelar</a>
                     </div>
                 </form>

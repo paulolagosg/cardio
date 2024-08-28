@@ -57,8 +57,8 @@
                     <td class="text-left">{{$d->tipo_producto}}</td>
                     <td class="text-left">{{$d->marca}}</td>
                     <td class="text-left">{{$d->modelo}}</td>
-                    <td class="text-center"><a href="/productos/editar/{{$d->slug}}"><i class="fa fa-edit text-dark"></i></a>&nbsp;
-                        <a href="#" onclick="eliminar('/productos/eliminar/',{{$d->id}})"><i class="fa fa-trash text-danger"></i></a>
+                    <td class="text-center"><a href="/productos/editar/{{$d->slug}}"><i class="fa fa-edit text-dark" data-toggle="tooltip" data-placement="top" title="Modificar"></i></a>&nbsp;
+                        <a href="#" onclick="eliminar('/productos/eliminar/',{{$d->id}})"><i class="fa fa-trash text-danger" data-toggle="tooltip" data-placement="top" title="Eliminar"></i></a>
                     </td>
                 </tr>
                 @endforeach
@@ -135,6 +135,7 @@
         });
 
     });
+    $('[data-toggle="tooltip"]').tooltip();
 </script>
 
 

@@ -12,6 +12,7 @@
         "laravel/helpers": "^1.7",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
+        "laraveles/spanish": "^1.5",
         "larswiegers/laravel-maps": "^0.18.0",
         "yajra/laravel-datatables-oracle": "^11.1"
     },

@@ -42,16 +42,7 @@
                                         <input type="hidden" id="id_producto_bd" name="id_producto_bd" value="{{$datos->id_producto}}" />
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="nombre">Ubicación Exacta del Equipo</label> <label class="obligatorio">*</label>
-                                        <input class="form-control" type="text" id="ubicacion" name="ubicacion" value="{{$datos->ubicacion}}" disabled />
-                                        <span id="error_giro" class="error">Debe ingresar una ubicación</span>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="nombre">DEA</label> <label class="obligatorio">*</label>
@@ -62,6 +53,15 @@
                                             @endforeach
                                         </select>
                                         <span id="error_rubro" class="error">Debe seleccionar un cliente</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="nombre">Ubicación Exacta del Equipo</label> <label class="obligatorio">*</label>
+                                        <input class="form-control" type="text" id="ubicacion" name="ubicacion" value="{{$datos->ubicacion}}" disabled />
+                                        <span id="error_giro" class="error">Debe ingresar una ubicación</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">

@@ -34,7 +34,8 @@
                                 <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="{{old('nombre')}}" required>
                             </div>
                             <div class="form-group">
-                                <label for="nombre">Tipo&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="text-dark" onclick="agregar_tipo_producto('Agregar Tipo',1)"><i class="fa fa-plus-circle"></i></a></label>
+                                <!-- <label for="nombre">Tipo&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="text-dark" onclick="agregar_tipo_producto('Agregar Tipo',1)"><i class="fa fa-plus-circle"></i></a></label> -->
+                                <label for="nombre">Tipo</label>
                                 <select class="form-control select2" id="id_tipo" name="id_tipo" required>
                                     <option value="">Seleccione</option>
                                     @foreach($tipos as $t)

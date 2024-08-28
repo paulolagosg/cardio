@@ -313,40 +313,63 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'Buscar',
         ],
-        // [
-        //     'text' => 'blog',
-        //     'url' => 'admin/blog',
-        //     'can' => 'manage-blog',
-        // ],
-        // [
-        //     'text' => 'pages',
-        //     'url' => 'admin/pages',
-        //     'icon' => 'far fa-fw fa-file',
-        //     'label' => 4,
-        //     'label_color' => 'success',
-        // ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
             'url' => 'perfil/ver',
             'icon' => 'fas fa-fw fa-user',
         ],
-        // [
-        //     'text' => 'change_password',
-        //     'url' => 'admin/settings',
-        //     'icon' => 'fas fa-fw fa-lock',
-        // ],
         ['header' => 'OPCIONES DEL SISTEMA'],
+        [
+            'text' => 'Clientes',
+            'icon' => 'fas fa-fw fa-users',
+            'submenu' => [
+                [
+                    'text' => 'Agregar Cliente',
+                    'url' => 'clientes/agregar',
+                    'icon' => 'fas fa-fw fa-plus-circle',
+                    'active' => ['clientes/agregar'],
+                ],
+                [
+                    'text' => 'Lista de clientes',
+                    'icon' => 'fas fa-fw fa-bars',
+                    'url' => 'clientes/lista',
+                    'active' => ['clientes/editar', 'regex:@^clientes/editar/[A-Za-z0-9-]+$@',],
+                ],
+            ]
+        ],
+        [
+            'text' => 'Trazabilidad',
+            'icon' => 'fas fa-fw fa-exclamation-triangle',
+            'class' => 'bg-',
+            'submenu' => [
+                [
+                    'text' => 'Nuevo Registro Con Cliente Existente',
+                    'url' => 'trazabilidad/agregar',
+                    'icon' => 'fas fa-fw fa-user-circle',
+                    //'active' => ['trazabilidad/editar', 'trazabilidad/agregar', 'regex:@^trazabilidad/editar/[A-Za-z0-9-]+$@',],
+                    'active' => ['trazabilidad/agregar'],
+                ],
+                [
+                    'text' => 'Nuevo Registro Sin Cliente Existente',
+                    'url' => 'trazabilidad/agregar_sc',
+                    'icon' => 'fas fa-fw fa-plus-circle',
+                    //'active' => ['trazabilidad/editar', 'trazabilidad/agregar', 'regex:@^trazabilidad/editar/[A-Za-z0-9-]+$@',],
+                    'active' => ['trazabilidad/agregar_sc'],
+                ],
+                [
+                    'text' => 'Vencimientos',
+                    'icon' => 'fas fa-fw fa-exclamation-triangle',
+                    'url' => '/trazabilidad/vencimientos',
+                    'active' => ['regex:@^trazabilidad/vencimientos/[A-Za-z0-9-]+$@'],
+                ],
+            ],
+        ],
         [
             'text' => 'Parametros',
             'icon' => 'fas fa-fw fa-list',
             'class' => 'bg-',
             'submenu' => [
-                [
-                    'text' => 'Clientes',
-                    'url' => 'clientes/lista',
-                    'active' => ['clientes/editar', 'clientes/agregar', 'regex:@^clientes/editar/[A-Za-z0-9-]+$@',],
-                ],
                 // [
                 //     'text' => 'Estados Vencimientos',
                 //     'url' => 'estados_vencimientos/lista',
@@ -407,33 +430,6 @@ return [
         //         ],
         //     ],
         // ],
-        [
-            'text' => 'Trazabilidad',
-            'icon' => 'fas fa-fw fa-exclamation-triangle',
-            'class' => 'bg-',
-            'submenu' => [
-                [
-                    'text' => 'Nuevo Registro Con Cliente Existente',
-                    'url' => 'trazabilidad/agregar',
-                    'icon' => 'fas fa-fw fa-user-circle',
-                    //'active' => ['trazabilidad/editar', 'trazabilidad/agregar', 'regex:@^trazabilidad/editar/[A-Za-z0-9-]+$@',],
-                    'active' => ['trazabilidad/agregar'],
-                ],
-                [
-                    'text' => 'Nuevo Registro Sin Cliente Existente',
-                    'url' => 'trazabilidad/agregar_sc',
-                    'icon' => 'fas fa-fw fa-plus-circle',
-                    //'active' => ['trazabilidad/editar', 'trazabilidad/agregar', 'regex:@^trazabilidad/editar/[A-Za-z0-9-]+$@',],
-                    'active' => ['trazabilidad/agregar_sc'],
-                ],
-                [
-                    'text' => 'Vencimientos',
-                    'icon' => 'fas fa-fw fa-exclamation-triangle',
-                    'url' => '/trazabilidad/vencimientos',
-                    'active' => ['regex:@^trazabilidad/vencimientos/[A-Za-z0-9-]+$@'],
-                ],
-            ],
-        ],
     ],
 
     /*

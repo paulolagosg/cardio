@@ -68,7 +68,7 @@
                             </div>
                             <div class="row" id="divClave" style="display:none;">
                                 <div class="col-md-12">
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <label for="form_clave">Contraseña Actual</label>
@@ -84,7 +84,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-4">
@@ -266,11 +266,11 @@
         }
         if ($('#btnCambiar').is(':checked')) {
             $('#btnCambiar').val(1);
-            if (password_actual === "") {
-                $('#error_clave_vacia').show();
-                $("#error_clave").show();
-                errores = errores + 1;
-            }
+            // if (password_actual === "") {
+            //     $('#error_clave_vacia').show();
+            //     $("#error_clave").show();
+            //     errores = errores + 1;
+            // }
             const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)([A-Za-z\d$@$!%*?&]|[^ ]){8,}$/;
             if (!(regex.test(password))) {
                 $("#error_clave_nueva").show();

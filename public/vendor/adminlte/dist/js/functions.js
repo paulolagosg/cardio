@@ -4,8 +4,8 @@ function eliminar(url,id) {
         text: "¿Está seguro(a) que desea eliminar el registro?",
         showCancelButton: true,
         cancelButtonText: 'Cancelar',
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#343a40',
         confirmButtonText: 'Aceptar'
     }).then((result) => {
         if (result.value == true) {
@@ -182,6 +182,40 @@ function obtener_productos(nID){
   });
 }
 
+function trazabilidad_con_cliente(){
+
+  $('#error_cliente').hide();
+  $('#error_dea').hide();
+  $('#error_ubicacion').hide();
+  $('#error_serie').hide();
+
+  let dea = $('#id_producto').val();
+  let ubicacion = $('#ubicacion').val();
+  let serie = $('#numero_serie').val();
+  let cliente = $('#id_cliente').val();
+  let mensajes = 0;
+
+  if(cliente == ""){
+    mensajes++;
+    $('#error_cliente').show();
+  }
+  if(dea == ""){
+    mensajes++;
+    $('#error_dea').show();
+  }
+  if(ubicacion == ""){
+    mensajes++;
+    $('#error_ubicacion').show();
+  }
+  if(serie == ""){
+    mensajes++;
+    $('#error_serie').show();
+  }
+
+  if(mensajes == 0){
+    $('#fClientes').submit();
+  }
+}
 function trazabilidad_cliente(){
   $('#error_rut').hide();
   $('#error_rut_val').hide();
@@ -424,18 +458,19 @@ function activaTab(tab){
   $('.nav-tabs a[href="#' + tab + '"]').tab('show');
 };
 
-function printErrores(texto) {
-  $(".print-error-msg").find("ul").html('');
-  $(".print-error-msg").show();
-  texto.forEach(function(elemento) {
-      $(".print-error-msg").find("ul").append('<li>' + elemento + '</li>');
-  });
-}
 
-function printErrorMsg(msg) {
-  $(".print-error-msg").find("ul").html('');
-  $(".print-error-msg").show();
-  $.each(msg, function(key, value) {
-      $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
-  });
+function cambiar_estado(url,id) {
+  Swal.fire({
+      title: 'Cambiar Estado',
+      text: "¿Está seguro(a) que desea cambiar el estado del registro?",
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#343a40',
+      confirmButtonText: 'Aceptar'
+  }).then((result) => {
+      if (result.value == true) {
+          window.location.href = url  +'/'+ id
+      }
+  })
 }

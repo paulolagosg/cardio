@@ -26,6 +26,7 @@ class PerfilController extends Controller
 
     public function editar(Request $request)
     {
+
         $tNombre = $request->name;
         $tCorreo = $request->email;
         $tClaveActual = $request->password_actual;
@@ -35,17 +36,16 @@ class PerfilController extends Controller
         $datosActuales =  User::where('id', $nUsuario)->first();
         $tClaveActualHashiada = Hash::make($tClaveActual);
 
-        if ($datosActuales->password != $tClaveActualHashiada) {
-            session()->flash('error', 'La clave actual ingresada no coincide con la guardada.');
-            return redirect()->back();
-
-            // session()->flash('errors_message', 'La clave actual ingresada no coincide con la guardada.');
-            // return redirect()->back()->with('errors', 'La clave actual ingresada no coincide con la guardada.');
-        }
         try {
             DB::beginTransaction();
 
             if (isset($nCambiar)) {
+                //echo $tClaveActual . "<br>" . $datosActuales->password . "<br>" . $tClaveActualHashiada;
+                // if ($datosActuales->password != $tClaveActualHashiada) {
+                //     //dd("if");
+                //     session()->flash('error', 'La clave actual ingresada no coincide con la guardada.');
+                //     return redirect()->back();
+                // }
                 $actualizar = DB::table('users')->where('id', $nUsuario)
                     ->update(['name' => $tNombre, 'email' => $tCorreo, 'password' => Hash::make($tClaveNueva)]);
             } else {
@@ -57,7 +57,7 @@ class PerfilController extends Controller
             return redirect()->back();
         } catch (Exception $e) {
             DB::rollBack();
-            session()->flash('errors', 'Error al modificar el registro.');
+            session()->flash('errors', 'Error al modificar el registro. ' . $e);
             return redirect()->back();
         }
     }
