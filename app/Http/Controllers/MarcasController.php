@@ -73,7 +73,10 @@ class MarcasController extends Controller
     {
         $datos = marcas::findOrFail($id);
 
-        $deleted = DB::table('marcas')->where('id', $id)->delete();
+        //$deleted = DB::table('marcas')->where('id', $id)->delete();
+        $actualizar = DB::table('marcas')
+            ->where('id', $id)
+            ->update(['estado' => 0]);
 
         session()->flash('message', 'Registro eliminado correctamente.');
         return Redirect::back();

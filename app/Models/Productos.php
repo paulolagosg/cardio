@@ -13,6 +13,11 @@ class Productos extends Model
         'nombre',
         'estado',
         'slug',
-        'id_tipo_producto'
+        'id_tipo_producto',
+        'sku',
+        'nombre_archivo',
+        'descripcion',
+        'ruta',
+        'precio'
     ];
 }

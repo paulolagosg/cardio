@@ -79,7 +79,10 @@ class ModelosController extends Controller
     {
         $datos = modelos::findOrFail($id);
 
-        $deleted = DB::table('modelos')->where('id', $id)->delete();
+        //$deleted = DB::table('modelos')->where('id', $id)->delete();
+        $actualizar = DB::table('modelos')
+            ->where('id', $id)
+            ->update(['estado' => 0]);
 
         session()->flash('message', 'Registro eliminado correctamente.');
         return Redirect::back();

@@ -321,6 +321,11 @@ return [
         ],
         ['header' => 'OPCIONES DEL SISTEMA'],
         [
+            'text' => 'Panel de Control',
+            'url' => '/home',
+            'icon' => 'fas fa-fw fa-signal',
+        ],
+        [
             'text' => 'Clientes',
             'icon' => 'fas fa-fw fa-users',
             'submenu' => [

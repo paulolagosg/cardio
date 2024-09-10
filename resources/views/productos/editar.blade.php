@@ -10,13 +10,14 @@
 <div class="card  card-dark">
     <div class="card-body">
         <div class="row">
-            @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+            @if (session('error'))
+            <div class="alert alert-danger mt-3 ml-3" style="display: block;">
+                {{ session('error') }}
+            </div>
+            @endif
+            @if (session()->has('message'))
+            <div class="alert alert-success mt-3 ml-3" style="display: block;">
+                {{ session('message') }}
             </div>
             @endif
         </div>
@@ -25,7 +26,7 @@
 
                 <div class="card">
 
-                    <form method="post" action="{{route('productos.actualizar')}}">
+                    <form method="post" enctype="multipart/form-data" action="{{route('productos.actualizar')}}">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
@@ -34,6 +35,10 @@
                                 <input type="hidden" id="id" name="id" value="{{$datos->id}}" />
                                 <input type="hidden" id="id_modelo_bd" name="id_modelo_bd" value="{{$datos->id_modelo}}" />
                                 <input type="hidden" id="id_marca_bd" name="id_marca_bd" value="{{$datos->id_marca}}" />
+                            </div>
+                            <div class="form-group">
+                                <label for="nombre">Descripción</label>
+                                <textarea class="form-control" name="descripcion" id="descripcion">{{old('nombre',$datos->descripcion)}}</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="nombre">Tipo</label>
@@ -59,10 +64,35 @@
                                     <option value="">Seleccione</option>
                                 </select>
                             </div>
-                            <div>
-                                <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
-                                <a href="{{route('productos.index')}}" class="btn text-white" style="background-color: #87161b"><i class="fa fa-ban"></i> Cancelar</a>
+                            <div class="form-group">
+                                <label for="nombre">Precio</label>
+                                <input class="form-control" type="number" name="precio" id="precio" value="{{old('precio',$datos->precio)}}" required />
                             </div>
+                            <div class="form-group">
+                                <label for="sku">SKU</label>
+                                <input class="form-control" type="text" name="sku" id="sku" value="{{old('sku',$datos->sku)}}" />
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="nombre">Foto del producto</label>
+                                        <small>Formatos permitidos jpg, jpeg, png</small>
+                                        <input class="form-control" type="file" name="foto" id="foto" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <a href="{{$datos->ruta}}" target="_blank"><img src="{{$datos->ruta}}" width="10%"></a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+                            <a href="{{route('productos.index')}}" class="btn text-white" style="background-color: #87161b"><i class="fa fa-ban"></i> Cancelar</a>
+                        </div>
                     </form>
                 </div>
             </div>

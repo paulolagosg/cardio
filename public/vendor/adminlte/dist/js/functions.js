@@ -93,6 +93,9 @@ function validar_cliente(){
   $('#error_direccion').hide();
   $('#error_correo').hide();
   $('#error_telefono').hide();
+  $('#error_nombre_ppal').hide();
+  $('#error_correo_ppal').hide();
+  $('#error_telefono_ppal').hide();
 
   let rut = $('#rut').val();
   let nombre = $('#nombre').val();
@@ -102,6 +105,9 @@ function validar_cliente(){
   let region = $('#id_region').val();
   let comuna = $('#id_comuna').val();
   let direccion = $('#direccion').val();
+  let nombre_cp = $('#nombre_principal').val();
+  let telefono_cp = $('#telefono_principal').val();
+  let correo_cp = $('#correo_principal').val();
   let mensajes = 0;
   if(nombre == ""){
     mensajes++;
@@ -144,15 +150,234 @@ function validar_cliente(){
 
   if($('#correo').val() != "" && !validarCorreoElectronico($('#correo').val())){
     mensajes++;
-   $('#error_correo').show();
- }
+    $('#error_correo').show();
+  }
   if($('#telefono').val() != "" && !validarNumerico($('#telefono').val())){
     mensajes++;
     $('#error_telefono').show();
   }
 
+  if($('#correo_principal').val() != "" && !validarCorreoElectronico($('#correo_principal').val())){
+    mensajes++;
+    $('#error_correo_ppal').show();
+  }
+  if($('#telefono_principal').val() != "" && !validarNumerico($('#telefono_principal').val())){
+    mensajes++;
+    $('#error_telefono_ppal').show();
+  }
+
   if(mensajes == 0){
       $('#fClientes').submit();
+  }
+}
+
+function validar_empresa(){
+  $('#error_rut').hide();
+  $('#error_rut_val').hide();
+  $('#error_rz').hide();
+  $('#error_giro').hide();
+  $('#error_direccion').hide();
+  $('#error_correo').hide();
+  $('#error_telefono').hide();
+  $('#error_telefono_val').hide();
+  $('#error_sitio').hide();
+  $('#error_logo').hide();
+  $('#error_banco').hide();
+  $('#error_tipo').hide();
+  $('#error_cuenta').hide();
+
+  let rut = $('#rut').val();
+  let razon = $('#razon_social').val();
+  let giro = $('#giro').val();
+  let direccion = $('#direccion').val();
+  let telefono = $('#telefono').val();
+  let correo = $('#correo_electronico').val();
+  let sitio = $('#sitio_web').val();
+  let banco = $('#id_banco').val();
+  let tipo = $('#id_tipo_cuenta').val();
+  let cuenta = $('#numero_cuenta').val();
+
+  let mensajes = 0;
+
+  if(rut == ""){
+    mensajes++;
+    $('#error_rut').show();
+  }
+  if(rut != "" && !validarRut(rut)){
+    mensajes++;
+    $('#error_rut_val').show();
+  }
+
+  if(razon == ""){
+    mensajes++;
+    $('#error_rz').show();
+  }
+  if(giro == ""){
+    mensajes++;
+    $('#error_giro').show();
+  }
+  if(direccion == ""){
+     mensajes++;
+    $('#error_direccion').show();
+  }
+
+  if(!validarCorreoElectronico(correo)){
+    mensajes++;
+    $('#error_correo').show();
+  }
+  if(!validarNumerico(telefono)){
+    mensajes++;
+    $('#error_telefono_val').show();
+  }
+
+  if(sitio == ""){
+    mensajes++;
+    $('#error_sitio').show();
+  }
+  if(banco == ""){
+    mensajes++;
+    $('#error_banco').show();
+  }
+  if(tipo == ""){
+    mensajes++;
+    $('#error_tipo').show();
+  }
+  if(cuenta == ""){
+    mensajes++;
+    $('#error_cuenta').show();
+  }
+
+  if(mensajes == 0){
+      $('#fEmpresas').submit();
+  }
+}
+
+function validar_cotizacion(){
+  $('#error_ejecutivo').hide();
+  $('#error_empresa').hide();
+  $('#error_solicitante').hide();
+  $('#error_correo').hide();
+  $('#error_rz').hide();
+  $('#error_rut').hide();
+  $('#error_rut_val').hide();
+  $('#error_giro').hide();
+  $('#error_telefono_val').hide();
+  $('#error_direccion').hide();
+  $('#error_region').hide();
+  $('#error_comuna').hide();
+  $('#error_vencimiento').hide();
+  $('#error_tipo_transporte').hide();
+  $('#error_tipo_pago').hide();
+  $('#error_plazo_pago').hide();
+  $('#error_tiempo').hide();
+  $('#error_cantidad_filas').hide();
+  $('#error_costo_envio').hide();
+  let mensajes = 0;
+
+  let ejecutivo = document.getElementById('id_usuario').value;
+  let empresa = document.getElementById('id_empresa').value;
+  let solicitante = document.getElementById('solicitante').value;
+  let correo = document.getElementById('correo_electronico').value;
+  let rz = document.getElementById('razon_social').value;
+  let rut = document.getElementById('rut').value;
+  let giro = document.getElementById('giro').value;
+  let telefono = document.getElementById('telefono').value;
+  let direccion = document.getElementById('direccion').value;
+  let region = document.getElementById('id_region').value;
+  let comuna = document.getElementById('id_comuna').value;
+  let vencimiento = document.getElementById('id_vencimiento').value;
+  let tipo_transporte = document.getElementById('id_tipo_transporte').value;
+  let tipo_pago = document.getElementById('id_tipo_pago').value;
+  let plazo_pago = document.getElementById('id_plazo_pago').value;
+  let tiempo = document.getElementById('id_tiempo_entrega').value;
+  let cantidadFilas = $("#tablaParametros tbody tr").length;
+  let costo_envio = $('#costo_envio').val();
+
+  if(ejecutivo == ""){
+    mensajes++;
+    $('#error_ejecutivo').show();
+  }
+  if(empresa == ""){
+    mensajes++;
+    $('#error_empresa').show();
+  }
+  if(solicitante == ""){
+    mensajes++;
+    $('#error_solicitante').show();
+  }
+  if(correo == ""){
+    mensajes++;
+    $('#error_correo').show();
+  }
+  if(rz == ""){
+    mensajes++;
+    $('#error_rz').show();
+  }
+  if(!validarRut(rut)){
+    mensajes++;
+    $('#error_rut_val').show();
+  }
+  if(giro == ""){
+    mensajes++;
+    $('#error_giro').show();
+  }
+  if(!validarCorreoElectronico(correo)){
+    mensajes++;
+    $('#error_correo').show();
+  }
+  if(!validarNumerico(telefono)){
+    mensajes++;
+    $('#error_telefono_val').show();
+  }
+  if(direccion == ""){
+    mensajes++;
+    $('#error_direccion').show();
+  }
+  if(region == ""){
+    mensajes++;
+    $('#error_region').show();
+  }
+  if(comuna == ""){
+    mensajes++;
+    $('#error_comuna').show();
+  }
+  if(vencimiento == ""){
+    mensajes++;
+    $('#error_vencimiento').show();
+  }
+  if(tipo_transporte == ""){
+    mensajes++;
+    $('#error_tipo_transporte').show();
+  }
+  if(tipo_pago == ""){
+    mensajes++;
+    $('#error_tipo_pago').show();
+  }
+  if(plazo_pago == ""){
+    mensajes++;
+    $('#error_plazo_pago').show();
+  }
+  if(tiempo == ""){
+    mensajes++;
+    $('#error_tiempo').show();
+  }
+  if(cantidadFilas <=1){
+    mensajes++;
+    $('#error_cantidad_filas').show();
+  }
+  if(!validarNumerico(costo_envio)){
+    mensajes++;
+    $('#error_costo_envio').show();
+  }
+  else{
+    if(parseInt(costo_envio) < 0){
+      mensajes++;
+      $('#error_costo_envio').show();
+    }
+  }
+
+  if(mensajes == 0){
+    $('#fCotizacion').submit();
   }
 }
 
@@ -164,6 +389,20 @@ function agregar_mantencion(){
   $('#modal-agregar_mp').modal('show');
 }
 
+function modal_secundario(){
+  $('#modal-agregar').modal('show');
+}
+
+$('#fClientes').on('click', '.editar_secundario', function (ists) {
+  $('#modal-agregar').modal('show');
+  var id = $(this).parent('a')[0].id;
+  var json=JSON.parse($('#'+id).attr('datos'));
+  console.log(json);
+  $('#nombre_secundario').val(json.nombre);
+  $('#telefono_secundario').val(json.telefono);
+  $('#correo_secundario').val(json.correo_electronico);
+  $('#id_contacto').val(json.id);
+});
 
 function obtener_productos(nID){
   $("#id_producto_d").empty();
@@ -179,6 +418,17 @@ function obtener_productos(nID){
               $("#id_producto_d").append(o);
             });
           }
+  });
+}
+
+function obtener_precio(nID){
+  $("#precio").val('');
+  $.ajax({
+      type: 'GET',
+      url: '/productos/obtener_precio/' + nID,
+      success: function(data) {
+          $("#precio").val(data);
+      }
   });
 }
 
@@ -310,11 +560,75 @@ function trazabilidad_cliente(){
   }
 }
 
+function agregar_secundario(){
+  var data = {
+    nombre_secundario: $('#nombre_secundario').val(),
+    telefono_secundario: $('#telefono_secundario').val(),
+    correo_secundario: $('#correo_secundario').val(),
+    id_cliente: $('#id_cliente').val(),
+    id_contacto: $('#id_contacto').val(),
+    _token: $('#id_token_mp').val(),
+  };
+  $('#error_nombre_modal').hide();
+  $('#error_telefono_modal').hide();
+  $('#error_correo_modal').hide();
+  let errores = 0;
+  if($('#nombre_secundario').val() == ""){
+    errores++;
+    $('#error_nombre_modal').show();
+  }
+  if($('#telefono_secundario').val() == ""){
+    errores++;
+    $('#error_telefono_modal').show();
+  }
+  if($('#correo_secundario').val() == ""){
+    errores++;
+    $('#error_correo_modal').show();
+  }
+
+  if($('#correo_secundario').val() != "" && !validarCorreoElectronico($('#correo_secundario').val())){
+    errores++;
+    $('#error_correo_modal').show();
+  }
+  if($('#telefono_secundario').val() != "" && !validarNumerico($('#telefono_secundario').val())){
+    errores++;
+    $('#error_telefono_modal').show();
+  }
+
+  if(errores == 0){
+    $.ajax({
+        type: "post",
+        url: "/clientes/guardar_secundario",
+        data: data,
+        success: function(data) {
+            let error = data.split("error");
+            if (error[1]) {
+                $('#msgError').show();
+                $('#msgError').html(error[1]);
+                $('.alert-danger').fadeIn().delay(3000).fadeOut();
+            } else {
+                let OK = data.split("OK");
+                if (OK[1]) {
+                  $('#nombre_secundario').val('');
+                  $('#telefono_secundario').val('');
+                  $('#correo_secundario').val('');
+                  $('#id_contacto').val(''),
+                  $('#msgOK').show();
+                  $('#msgOK').html(OK[1]);
+                  $('.alert-success').fadeIn().delay(3000).fadeOut();
+                }
+            }
+        }
+    });
+  }
+}
 function guardar_mantencion(){
   var data = {
     id_tipo_mantencion: $('#id_tipo_mantencion').val(),
     id_trazabilidad: $('#id_trazabilidad').val(),
     fecha_mantencion: $('#fecha_mantencion').val(),
+    guia_despacho: $('#guia_m').val(),
+    factura: $('#factura_m').val(),
     _token: $('#id_token_mp').val(),
   };
   $('#error_tipo_mantencion_modal').hide();
@@ -345,6 +659,8 @@ function guardar_mantencion(){
                 if (OK[1]) {
                   $('#id_tipo_mantencion').val(null).trigger('change');
                   $('#fecha_mantencion').val('');
+                  $('#guia_m').val('');
+                  $('#factura_m').val('');
                   $('#msgOKM').show();
                   $('#msgOKM').html(OK[1]);
                   $('.alert-success').fadeIn().delay(3000).fadeOut();
@@ -361,6 +677,8 @@ function agregar_dispositivo(){
     id_producto: $('#id_producto_d').val(),
     lote: $('#lote').val(),
     vencimiento: $('#vencimiento').val(),
+    guia: $('#guia').val(),
+    factura: $('#factura').val(),
     _token: $('#id_token').val(),
   };
   $('#error_tproducto_modal').hide();
@@ -403,6 +721,8 @@ function agregar_dispositivo(){
                       $('#id_producto_d').val(null).trigger('change');
                       $('#lote').val('');
                       $('#vencimiento').val('');
+                      $('#guia').val('');
+                      $('#factura').val('');
                       $('#msgOK').show();
                       $('#msgOK').html(OK[1]);
                       $('.alert-success').fadeIn().delay(3000).fadeOut();
@@ -473,4 +793,26 @@ function cambiar_estado(url,id) {
           window.location.href = url  +'/'+ id
       }
   })
+}
+
+function validarGuionRut(rut){
+  cadena= rut.value;
+  if(cadena.length && cadena.indexOf('-') == -1){
+      // Agregar guion
+      largo=cadena.length;
+      r=cadena.substring(0,largo-1);
+      d=cadena.substring(largo-1,largo);
+      c=r+'-'+d;
+      rut.value=c;
+  }
+
+}
+
+function formatoPesos({ currency, value}) {
+  const formatter = new Intl.NumberFormat('es-AR', {
+    style: 'currency',
+    minimumFractionDigits: 2,
+    currency
+  }) 
+  return formatter.format(value)
 }

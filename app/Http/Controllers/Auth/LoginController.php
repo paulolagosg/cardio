@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller
 {
@@ -36,5 +39,18 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
+        //$this->middleware('CheckUsuarioActivo')->only('logout');
+    }
+
+    protected function redirectTo()
+    {
+        $user = Auth::user();
+
+        if ($user->estado == 0) {
+            Auth::logout();
+            return '/login';
+        }
+
+        return '/home';
     }
 }

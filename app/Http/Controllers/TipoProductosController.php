@@ -74,7 +74,11 @@ class TipoProductosController extends Controller
     {
         $datos = TipoProductos::findOrFail($id);
 
-        $deleted = DB::table('tipo_productos')->where('id', $id)->delete();
+        //$deleted = DB::table('tipo_productos')->where('id', $id)->delete();
+        $actualizar = DB::table('tipo_productos')
+            ->where('id', $id)
+            ->update(['estado' => 0]);
+
 
         session()->flash('message', 'Registro eliminado correctamente.');
         return Redirect::back();

@@ -26,12 +26,16 @@
 
                 <div class="card">
 
-                    <form method="post" action="{{route('productos.crear')}}">
+                    <form method="post" enctype="multipart/form-data" action="{{route('productos.crear')}}">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="nombre">Nombre</label>
                                 <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="{{old('nombre')}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombre">Descripción</label>
+                                <textarea class="form-control" name="descripcion" id="descripcion"></textarea>
                             </div>
                             <div class="form-group">
                                 <!-- <label for="nombre">Tipo&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="text-dark" onclick="agregar_tipo_producto('Agregar Tipo',1)"><i class="fa fa-plus-circle"></i></a></label> -->
@@ -58,6 +62,19 @@
                                 <select class="form-control select2" id="id_modelo" name="id_modelo" required>
                                     <option value="">Seleccione</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombre">Precio</label>
+                                <input class="form-control" type="number" name="precio" id="precio" value="{{old('precio')}}" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="sku">SKU</label>
+                                <input class="form-control" type="text" name="sku" id="sku" />
+                            </div>
+                            <div class="form-group">
+                                <label for="nombre">Foto del producto</label>
+                                <small>Formatos permitidos jpg, jpeg, png</small>
+                                <input class="form-control" type="file" name="foto" id="foto" />
                             </div>
                             <div>
                                 <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Agregar</button>

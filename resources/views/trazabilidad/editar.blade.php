@@ -19,6 +19,16 @@
                 </ul>
             </div>
             @endif
+            @if (session('error'))
+            <div class="alert alert-danger mt-3 ml-3" style="display: block;">
+                {{ session('error') }}
+            </div>
+            @endif
+            @if (session()->has('message'))
+            <div class="alert alert-success mt-3 ml-3" style="display: block;">
+                {{ session('message') }}
+            </div>
+            @endif
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -60,7 +70,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="nombre">Ubicación Exacta del Equipo</label> <label class="obligatorio">*</label>
-                                        <input class="form-control" type="text" id="ubicacion" name="ubicacion" value="{{$datos->ubicacion}}" disabled />
+                                        <input class="form-control" type="text" id="ubicacion" name="ubicacion" value="{{$datos->ubicacion}}" />
                                         <span id="error_giro" class="error">Debe ingresar una ubicación</span>
                                     </div>
                                 </div>
@@ -74,40 +84,54 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
+                                    <p>
+                                        <a href="#" onclick="trazabilidad_con_cliente()" class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-header  bg-dark">
                                             <h3 class="card-title">Suminstros</h3>
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                                            </div>
                                         </div>
                                         <div class="card-body">
                                             <div class="form-group">
-                                                <button type="button" onclick="agregar_producto_vencimiento()" class="btn text-white bg-dark"><i class="fa fa-plus-circle"></i> Agregar Dispositivo</a>
+                                                <button type="button" onclick="agregar_producto_vencimiento()" class="btn text-white bg-dark"><i class="fa fa-plus-circle"></i> Agregar Suministro</a>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 table-responsive">
                                                     <table id="tablaDispositivos" class="table table-bordered table-hover dataTable dtr-inline table-striped" aria-describedby="example2_info">
                                                         <thead>
                                                             <tr>
+                                                                <th class="text-center">Fecha</th>
                                                                 <th class="text-center">Nombre</th>
                                                                 <th class="text-center">Lote</th>
                                                                 <th class="text-center">Vencimiento</th>
+                                                                <th class="text-center">Guía Despacho</th>
+                                                                <th class="text-center">Factura</th>
                                                                 <th class="text-center">Estado</th>
                                                             </tr>
                                                             <tr>
+                                                                <th>Fecha</th>
                                                                 <th>Nombre</th>
                                                                 <th>Lote</th>
                                                                 <th>Vencimiento</th>
+                                                                <th>Guía Despacho</th>
+                                                                <th>Factura</th>
                                                                 <th>Estado</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             @foreach($dispositivos as $dispositivo)
-                                                            <tr>
+                                                            <tr @if($dispositivo->id_estado != 1) style="background-color:#d2d2d2 !important;" @endif >
+                                                                <td>{{$dispositivo->vencimiento}}</td>
                                                                 <td>{{$dispositivo->nombre}} - {{$dispositivo->marca}} - {{$dispositivo->modelo}}</td>
                                                                 <td>{{$dispositivo->lote}}</td>
-                                                                <td class="text-center" style="background-color:{{$dispositivo->color}}">{{$dispositivo->fecha}}</td>
+                                                                <td class="text-center" @if($dispositivo->id_estado == 1)style="background-color:{{$dispositivo->color}}" @endif>{{$dispositivo->fecha}}</td>
+                                                                <td>{{$dispositivo->guia_despacho}}</td>
+                                                                <td>{{$dispositivo->factura}}</td>
                                                                 <td>{{$dispositivo->estado}}</td>
                                                             </tr>
                                                             @endforeach
@@ -124,9 +148,6 @@
                                     <div class="card">
                                         <div class="card-header  bg-dark">
                                             <h3 class="card-title">Mantenciones Preventivas</h3>
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                                            </div>
                                         </div>
                                         <div class="card-body">
                                             <div class="form-group">
@@ -134,24 +155,33 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 table-responsive">
-                                                    <table id="tablaDispositivos" class="table table-bordered table-hover dataTable dtr-inline table-striped" aria-describedby="example2_info">
+                                                    <table id="tablaMantenciones" class="table table-bordered table-hover dataTable dtr-inline table-striped" aria-describedby="example2_info">
                                                         <thead>
                                                             <tr>
+                                                                <th class="text-center">fecha</th>
                                                                 <th class="text-center">Tipo</th>
                                                                 <th class="text-center">Vencimiento</th>
+                                                                <th class="text-center">Guía Despacho</th>
+                                                                <th class="text-center">Factura</th>
                                                                 <th class="text-center">Estado</th>
                                                             </tr>
                                                             <tr>
-                                                                <th>Nombre</th>
+                                                                <th>fecha</th>
+                                                                <th>Tipo</th>
                                                                 <th>Vencimiento</th>
+                                                                <th>Guía Despacho</th>
+                                                                <th>Factura</th>
                                                                 <th>Estado</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             @foreach($mantenciones as $m)
-                                                            <tr>
+                                                            <tr @if($m->id_estado != 1) style="background-color:#d2d2d2 !important;" @endif>
+                                                                <td>{{$m->vencimiento}}</td>
                                                                 <td>{{$m->tipo}}</td>
-                                                                <td class="text-center" style="background-color:{{$m->color}}">{{$m->fecha}}</td>
+                                                                <td class="text-center" @if($m->id_estado == 1) style="background-color:{{$m->color}}" @endif>{{$m->fecha}}</td>
+                                                                <td>{{$m->guia_despacho}}</td>
+                                                                <td>{{$m->factura}}</td>
                                                                 <td class="text-center">{{$m->estado}}</td>
                                                             </tr>
                                                             @endforeach
@@ -225,6 +255,16 @@
                                 <input type="date" class="form-control  datepicker" id="vencimiento" name="vencimiento" value="" required>
                                 <span id="error_vencimiento_modal" class="error">Debe ingresar una fecha</span>
                             </div>
+                            <div class="form-group">
+                                <label for="nombre">Guía de despacho asociada</label>
+                                <input type="text" class="form-control" id="guia" name="guia" value="" required>
+                                <span id="error_guia" class="error">Debe ingresar una fecha</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombre">Factura asociada</label>
+                                <input type="text" class="form-control" id="factura" name="factura" value="" required>
+                                <span id="error_factura" class="error">Debe ingresar una fecha</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -274,6 +314,16 @@
                                 <label for="nombre">Fecha</label>
                                 <input type="date" class="form-control  datepicker" id="fecha_mantencion" name="fecha_mantencion" value="" required>
                                 <span id="error_fmantencion_modal" class="error">Debe ingresar una fecha</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombre">Guía de despacho asociada</label>
+                                <input type="text" class="form-control" id="guia_m" name="guia_m" value="" required>
+                                <span id="error_guia_modal" class="error">Debe ingresar una fecha</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombre">Factura asociada</label>
+                                <input type="text" class="form-control" id="factura_m" name="factura_m" value="" required>
+                                <span id="error_guia_modal" class="error">Debe ingresar una fecha</span>
                             </div>
                         </div>
                     </div>
@@ -325,8 +375,8 @@
         $('#id_cliente').trigger('change');
         $('#id_producto').val($('#id_producto_bd').val()); // Select the option with a value of '1'
         $('#id_producto').trigger('change');
-        // $('.alert-success').fadeIn().delay(3000).fadeOut();
-        // $('.alert-danger').fadeIn().delay(3000).fadeOut();
+        $('.alert-success').fadeIn().delay(3000).fadeOut();
+        $('.alert-danger').fadeIn().delay(3000).fadeOut();
 
         $('#tablaDispositivos').DataTable({
             language: {
@@ -345,8 +395,55 @@
                     "previous": "Anterior"
                 }
             },
+            order: [
+                [0, 'asc']
+            ],
+            columnDefs: [{
+                targets: [0],
+                visible: false
+            }],
             initComplete: function() {
-                this.api().columns([0, 1, 2]).every(function() {
+                this.api().columns([0, 1, 2, 3, 4, 5]).every(function() {
+                    var that = this;
+                    var input = $('<input size="10" type="text" placeholder="Buscar.." />')
+                        .appendTo($(this.header()).empty())
+                        .on('keyup change', function() {
+                            if (that.search() !== this.value) {
+                                that
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                });
+
+            }
+        });
+        $('#tablaMantenciones').DataTable({
+            language: {
+                info: 'Mostrando página _PAGE_ de _PAGES_',
+                infoEmpty: 'No hay datos disponbles',
+                infoFiltered: '(filtrados de _MAX_ registros totales)',
+                lengthMenu: 'Mostrar _MENU_ registros por página',
+                info: "Mostrando _START_ a _END_ de _TOTAL_ ",
+                zeroRecords: 'No se encontraron datos',
+                emptyTable: 'No se encontraron datos',
+                search: 'Buscar: ',
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+            order: [
+                [0, 'asc']
+            ],
+            columnDefs: [{
+                targets: [0],
+                visible: false
+            }],
+            initComplete: function() {
+                this.api().columns([0, 1, 2, 3, 4]).every(function() {
                     var that = this;
                     var input = $('<input size="10" type="text" placeholder="Buscar.." />')
                         .appendTo($(this.header()).empty())

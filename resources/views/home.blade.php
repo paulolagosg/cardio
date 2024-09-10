@@ -92,76 +92,117 @@
             </div>
         </div>
     </div>
-
-    <div class="card">
+    <div class="card d-none d-sm-block">
         <div class="card-body">
             <div class="row">
-                <div class="col-12">
-                    <div style="height:70vh;">
+                <div class="col-6">
+                    <div style="height:50vh;">
                         <h4 class="text-center">Clientes por Región</h4>
                         <canvas id="gregiones"></canvas>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <p>&nbsp;</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div style="height:70vh;;width:100%;">
+                <div class="col-6">
+                    <div style="height:50vh;;width:100%;">
                         <h4 class="text-center">Clientes por Rubro</h4>
                         <canvas id="grubros"></canvas>
                     </div>
                 </div>
             </div>
-
-
+            <!-- <div class="row">
+                <div class="col-12">
+                    <p>&nbsp;</p>
+                </div>
+            </div> -->
+            <!-- <div class="row">
+                <div class="col-6">
+                    <div style="height:70vh;;width:100%;">
+                        <h4 class="text-center">Clientes por Rubro</h4>
+                        <canvas id="grubros"></canvas>
+                    </div>
+                </div>
+            </div> -->
         </div>
     </div>
-    <!-- x-maps-google :zoomLevel="5" :centerPoint="['lat' => -38, 'long' => -72]" :markers="[['lat' => -38.7394499, 'long' => -72.6463222, 'title' => 'Punto  1'],
-['lat' => -33.4247594, 'long' => -70.6145466, 'title' => 'Punto  2']]"></x-maps-google -->
-
+    <div class="card d-block d-sm-none table-responsive">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="text-center">Clientes por Región</h4>
+                    <table id="tablaCR" class="table table-bordered table-hover dataTable dtr-inline table-striped" aria-describedby="tcr">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Región</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($clientes_regiones_tabla as $c)
+                            <tr>
+                                <td class="text-left">{{$c->nombre}}</td>
+                                <td class="text-right">{{$c->total}}</td>
+                                <td class="text-center">
+                                    @if($c->total > 0)
+                                    <a href="/clientes/comuna/{{$c->nombre}}"><i class="fa fa-eye text-dark" data-toggle="tooltip" data-placement="top" title="Ver"></i></a>
+                                    @else
+                                    <a href="#" onclick="alert('No hay información para mostrar')"><i class="fa fa-eye text-dark" data-toggle="tooltip" data-placement="top" title="Ver"></i></a>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="text-center">Clientes por Rubro</h4>
+                    <table id="tablaCR" class="table table-bordered table-hover dataTable dtr-inline table-striped" aria-describedby="tcr">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Rubro</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($clientes_rubros_tabla as $c)
+                            <tr>
+                                <td class="text-left">{{$c->nombre}}</td>
+                                <td class="text-right">{{$c->total}}</td>
+                                <td class="text-center">
+                                    @if($c->total > 0)
+                                    <a href="/clientes/rubro/{{$c->nombre}}"><i class="fa fa-eye text-dark" data-toggle="tooltip" data-placement="top" title="Ver"></i></a>
+                                    @else
+                                    <a href="#" onclick="alert('No hay información para mostrar')"><i class="fa fa-eye text-dark" data-toggle="tooltip" data-placement="top" title="Ver"></i></a>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white">
+        <div class="row">
+            <div class="col-12">
+                <div style="max-height:500px;">
+                    <x-maps-google :zoomLevel="5" :centerPoint="['lat' => -38, 'long' => -72]" :markers="$mapa"></x-maps-google>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
 @stop
 @section('css')
 @stop
 
 @section('js')
 <script src="//cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
-    //grafico clientes por region
-    // let ctx = document.getElementById('gregiones')
-    // let dataValue = {
-    //     labels: @json($arreglo_regiones),
-    //     datasets: [{
-    //         data: @json($arreglo_cantidades),
-    //         backgroundColor: @json($arreglo_colores),
-    //         borderWidth: 2 // Border width for each segment
-    //     }]
-    // }
-    // let pieChart = new Chart(ctx, {
-    //     type: 'pie',
-    //     data: dataValue,
-    //     options: {
-    //         responsive: true,
-    //         plugins: {
-    //             title: {
-    //                 display: false,
-    //                 text: 'Cantidad de Clientes por región'
-    //             }
-    //         },
-    //         onClick: function(event, elements) {
-    //             const clickedElement = elements[0];
-    //             const datasetIndex = clickedElement.index;
-    //             const label = dataValue.labels[datasetIndex];
-    //             const labelValue = dataValue.datasets[0].data[datasetIndex];
-    //             location.href = "clientes/region/" + label;
-    //         }
-    //     }
-    // });
     //grafico clientes por region
     const canvasr = document.getElementById('gregiones');
     const gcreg = canvasr.getContext('2d');
@@ -199,7 +240,7 @@
             return;
         }
         // Alerts "You clicked on A" if you click the "A" chart
-        location.href = "clientes/region/" + chartr.data.labels[res[0].index];
+        location.href = "clientes/comuna/" + chartr.data.labels[res[0].index];
     };
 
     //grafico clientes por rubro
@@ -212,7 +253,7 @@
             datasets: [{
                 data: @json($cr_cantidades),
                 backgroundColor: @json($cr_colores),
-            }],
+            }]
         },
         options: {
             responsive: true,
@@ -242,4 +283,5 @@
         location.href = "clientes/rubro/" + chart.data.labels[res[0].index];
     };
 </script>
+
 @stop

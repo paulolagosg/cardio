@@ -71,7 +71,11 @@
                 @endforeach
             </tbody>
         </table>
-
+        <div class="row">
+            <div class="col-12">
+                <a href="/home" class="btn text-white" style="background-color: #87161b"><i class="fa fa-arrow-left"></i> Volver</a>
+            </div>
+        </div>
     </div>
 </div>@stop
 @section('css')

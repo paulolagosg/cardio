@@ -172,7 +172,7 @@ class TrazabilidadController extends Controller
                 DB::raw("productos.nombre"),
                 DB::raw("modelos.nombre as modelo"),
                 DB::raw("estados_vencimientos.nombre as estado"),
-                DB::raw("estados_vencimientos.nombre as id_estado"),
+                DB::raw("estados_vencimientos.id as id_estado"),
                 DB::raw("tipo_productos.nombre as tipo_producto"),
                 DB::raw("to_char(trazabilidad_productos.vencimiento,'DD/MM/YYYY') as fecha "),
                 DB::raw("case when  (EXTRACT(YEAR FROM trazabilidad_productos.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
@@ -195,7 +195,7 @@ class TrazabilidadController extends Controller
                 'trazabilidad_mantenciones.*',
                 DB::raw("tipos_mantenciones.nombre as tipo"),
                 DB::raw("estados_mantenciones.nombre as estado"),
-                DB::raw("estados_mantenciones.nombre as id_estado"),
+                DB::raw("estados_mantenciones.id as id_estado"),
                 DB::raw("to_char(trazabilidad_mantenciones.vencimiento,'DD/MM/YYYY') as fecha "),
                 DB::raw("case when  (EXTRACT(YEAR FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
        (EXTRACT(MONTH FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) between 7 and 12 then 'orange'
@@ -212,31 +212,89 @@ class TrazabilidadController extends Controller
 
     public function actualizar(Request $request)
     {
-        $nombre = $request->nombre;
+        //dd($request);
+        $ubicacion = $request->ubicacion;
         $id = $request->id;
 
-        $validated = $request->validate([
-            'nombre' => 'required|max:200',
-        ]);
 
-        $actualizar = DB::table('clientes')
+        $actualizar = DB::table('trazabilidades')
             ->where('id', $id)
             ->update([
-                'nombre' => $nombre,
-                'slug' => str_slug($nombre, '-'),
-                'id_rubro' => $request->id_rubro,
-                'razon_social' => $request->razon_social,
-                'giro' => $request->giro,
-                'direccion' => $request->direccion,
-                'id_region' => $request->id_region,
-                'id_comuna' => $request->id_comuna,
-                'telefono' => $request->telefono,
-                'correo' => $request->correo,
-                'sitio_web' => $request->sitio_web
+                'ubicacion' => $ubicacion
             ]);
 
+        $datos = Trazabilidades::where('id', $id)->get();
+        if (count($datos) <= 0) {
+            session()->flash('error', 'El registro no existe.');
+            return redirect()->route('trazabilidad.vencimientos')->with('error', 'El registro no existe.');
+        } else {
+            $datos = Trazabilidades::where('id', $id)->first();
+        }
+        // $clientes = Clientes::where('estado', 1)->orderBy('nombre', 'ASC')->get();
+        // $deas = Productos::join('marcas', 'marcas.id', 'productos.id_marca')
+        //     ->join('modelos', 'modelos.id', 'productos.id_modelo')
+        //     ->where('productos.estado', 1)
+        //     ->where('id_tipo_producto', 1)
+        //     ->orderBy('nombre', 'ASC')
+        //     ->select('productos.id', DB::raw("productos.nombre||' - '||marcas.nombre|| ' - '||modelos.nombre as nombre"))
+        //     ->get();
+        // $baterias =   Productos::where('estado', 1)->where('id_tipo_producto', 2)->orderBy('nombre', 'ASC')->get();
+        // $electrodo_adulto =   Productos::where('estado', 1)->where('id_tipo_producto', 3)->orderBy('nombre', 'ASC')->get();
+        // $electrodo_pediatrico =   Productos::where('estado', 1)->where('id_tipo_producto', 4)->orderBy('nombre', 'ASC')->get();
+        // $tipos_productos = TipoProductos::where('estado', 1)->where('id', '<>', 1)->orderBy('nombre', 'ASC')->get();
+        // $tipos_mantenciones = TiposMantenciones::where('estado', 1)->orderBy('nombre', 'ASC')->get();
+
+        // $dispositivos = DB::table('trazabilidad_productos')
+        //     ->join('trazabilidades', 'trazabilidades.id', 'trazabilidad_productos.id_trazabilidad')
+        //     ->join('productos', 'productos.id', 'trazabilidad_productos.id_producto')
+        //     ->join('tipo_productos', 'tipo_productos.id', 'productos.id_tipo_producto')
+        //     ->join('marcas', 'marcas.id', 'productos.id_marca')
+        //     ->join('modelos', 'modelos.id', 'productos.id_modelo')
+        //     ->join('estados_vencimientos', 'estados_vencimientos.id', 'trazabilidad_productos.id_estado_vencimiento')
+        //     ->select(
+        //         'trazabilidad_productos.*',
+        //         DB::raw("marcas.nombre as marca"),
+        //         DB::raw("productos.nombre"),
+        //         DB::raw("modelos.nombre as modelo"),
+        //         DB::raw("estados_vencimientos.nombre as estado"),
+        //         DB::raw("estados_vencimientos.id as id_estado"),
+        //         DB::raw("tipo_productos.nombre as tipo_producto"),
+        //         DB::raw("to_char(trazabilidad_productos.vencimiento,'DD/MM/YYYY') as fecha "),
+        //         DB::raw("case when  (EXTRACT(YEAR FROM trazabilidad_productos.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
+        //    (EXTRACT(MONTH FROM trazabilidad_productos.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) between 4 and 6 then 'yellow'
+        //                     when  (EXTRACT(YEAR FROM trazabilidad_productos.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
+        //    (EXTRACT(MONTH FROM trazabilidad_productos.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) between 2 and 3 then 'orange'
+        //                     when  (EXTRACT(YEAR FROM trazabilidad_productos.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
+        //    (EXTRACT(MONTH FROM trazabilidad_productos.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) between 0 and 1 then  'red;color:#fff' 
+        //                     else 'green;color:#fff'
+        //                 end as color")
+        //     )
+        //     ->where('trazabilidad_productos.id_trazabilidad', $datos->id)
+        //     ->get();
+        // DB::enableQueryLog();
+        // $mantenciones = DB::table('trazabilidad_mantenciones')
+        //     ->join('trazabilidades', 'trazabilidades.id', 'trazabilidad_mantenciones.id_trazabilidad')
+        //     ->join('tipos_mantenciones', 'tipos_mantenciones.id', 'trazabilidad_mantenciones.id_tipo_mantencion')
+        //     ->join('estados_mantenciones', 'estados_mantenciones.id', 'trazabilidad_mantenciones.id_estado_mantencion')
+        //     ->select(
+        //         'trazabilidad_mantenciones.*',
+        //         DB::raw("tipos_mantenciones.nombre as tipo"),
+        //         DB::raw("estados_mantenciones.nombre as estado"),
+        //         DB::raw("estados_mantenciones.id as id_estado"),
+        //         DB::raw("to_char(trazabilidad_mantenciones.vencimiento,'DD/MM/YYYY') as fecha "),
+        //         DB::raw("case when  (EXTRACT(YEAR FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
+        //    (EXTRACT(MONTH FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) between 7 and 12 then 'orange'
+        //                     when  (EXTRACT(YEAR FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
+        //    (EXTRACT(MONTH FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) <= 6 then  'red;color:#fff' 
+        //                     else 'green;color:#fff'
+        //                 end as color")
+        //     )
+        //     ->where('trazabilidad_mantenciones.id_trazabilidad', $datos->id)
+        //     ->get();
+
         session()->flash('message', 'Registro modificado correctamente.');
-        return redirect()->to('/clientes/lista');
+
+        return redirect()->to('/trazabilidad/editar/' . $datos->slug);
     }
 
     public function eliminar($id)
@@ -277,6 +335,8 @@ class TrazabilidadController extends Controller
             $dispositivo->id_producto = $request->id_producto;
             $dispositivo->lote = $request->lote;
             $dispositivo->vencimiento = $request->vencimiento;
+            $dispositivo->guia_despacho = $request->guia;
+            $dispositivo->factura = $request->factura;
             $dispositivo->id_estado_vencimiento = 1;
             $dispositivo->save();
 
@@ -299,6 +359,8 @@ class TrazabilidadController extends Controller
             $mantencion->id_trazabilidad = $request->id_trazabilidad;
             $mantencion->id_tipo_mantencion = $request->id_tipo_mantencion;
             $mantencion->vencimiento = $request->fecha_mantencion;
+            $mantencion->guia_despacho = $request->guia_despacho;
+            $mantencion->factura = $request->factura;
             $mantencion->id_estado_mantencion = 1;
             $mantencion->save();
 
@@ -405,36 +467,30 @@ class TrazabilidadController extends Controller
         return view('trazabilidad.vencimientos', compact('vencimientos', 'mantenciones', 'tab'));
     }
 
-    public function mantenciones($id = null)
+    public function clientes($slug = null)
     {
-        $rango = "";
-        if ($id == 1) {
-            $rango = '(0, 1)';
-        }
-        if ($id == 3) {
-            $rango = '(2, 3)';
-        }
-        if ($id == 6) {
-            $rango = '(4,5, 6)';
-        }
-        //dd($rango);
-        DB::enableQueryLog();
-        $vencimientos = DB::table('trazabilidad_mantenciones')
+
+        $vencimientos = DB::table('trazabilidad_productos')
             ->join('trazabilidades', 'trazabilidades.id', 'trazabilidad_productos.id_trazabilidad')
             ->join('clientes', 'clientes.id', 'trazabilidades.id_cliente')
-            ->join('tipos_mantenciones', 'tipos_mantenciones.id', 'productos.id_tipo_mantencion')
-            // ->when($rango, function ($query, string $rango) {
-            //     $query->whereRaw('(EXTRACT(YEAR FROM trazabilidad_productos.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
-            //    (EXTRACT(MONTH FROM trazabilidad_productos.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) in ' . $rango . '');
-            // })
+            ->join('productos', 'productos.id', 'trazabilidad_productos.id_producto')
+            ->join('tipo_productos', 'tipo_productos.id', 'productos.id_tipo_producto')
+            ->join('marcas', 'marcas.id', 'productos.id_marca')
+            ->join('modelos', 'modelos.id', 'productos.id_modelo')
+            ->join('estados_vencimientos', 'estados_vencimientos.id', 'trazabilidad_productos.id_estado_vencimiento')
+            ->where('clientes.slug', $slug)
             ->select(
-                'trazabilidad_mantenciones.*',
+                'trazabilidad_productos.*',
+                'ubicacion',
                 'trazabilidades.slug',
+                DB::raw("marcas.nombre as marca"),
                 DB::raw("productos.nombre"),
                 DB::raw("modelos.nombre as modelo"),
+                DB::raw("estados_vencimientos.nombre as estado"),
+                DB::raw("estados_vencimientos.id as id_estado"),
                 DB::raw("clientes.razon_social||' ('||clientes.nombre||')'  as cliente"),
-                DB::raw("tipos_mantenciones.nombre as tipo"),
-                DB::raw("to_char(trazabilidad_mantenciones.vencimiento,'DD/MM/YYYY') as fecha "),
+                DB::raw("tipo_productos.nombre as tipo_producto"),
+                DB::raw("to_char(trazabilidad_productos.vencimiento,'DD/MM/YYYY') as fecha "),
                 DB::raw("case when  (EXTRACT(YEAR FROM trazabilidad_productos.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
        (EXTRACT(MONTH FROM trazabilidad_productos.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) between 4 and 6 then 'yellow'
                         when  (EXTRACT(YEAR FROM trazabilidad_productos.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
@@ -443,11 +499,34 @@ class TrazabilidadController extends Controller
        (EXTRACT(MONTH FROM trazabilidad_productos.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) <= 1 then 'red;color:#fff' 
                         else 'green;color:#fff'
                     end as color")
-            )->orderBy('trazabilidad_mantenciones.vencimiento', 'DESC')->get();
+            )->orderBy('trazabilidad_productos.vencimiento', 'DESC')->get();
 
         //dd(DB::getQueryLog());
-        $tab = 2;
-        return view('trazabilidad.vencimientos', compact('vencimientos', 'tab'));
+
+        $mantenciones = DB::table('trazabilidad_mantenciones')
+            ->join('trazabilidades', 'trazabilidades.id', 'trazabilidad_mantenciones.id_trazabilidad')
+            ->join('clientes', 'clientes.id', 'trazabilidades.id_cliente')
+            ->join('tipos_mantenciones', 'tipos_mantenciones.id', 'trazabilidad_mantenciones.id_tipo_mantencion')
+            ->join('estados_mantenciones', 'estados_mantenciones.id', 'trazabilidad_mantenciones.id_estado_mantencion')
+            ->where('clientes.slug', $slug)
+            ->select(
+                'trazabilidad_mantenciones.*',
+                'trazabilidades.slug',
+                DB::raw("clientes.razon_social||' ('||clientes.nombre||')'  as cliente"),
+                DB::raw("tipos_mantenciones.nombre as tipo"),
+                DB::raw("estados_mantenciones.nombre as estado"),
+                DB::raw("estados_mantenciones.id as id_estado"),
+                DB::raw("to_char(trazabilidad_mantenciones.vencimiento,'DD/MM/YYYY') as fecha "),
+                DB::raw("case when  (EXTRACT(YEAR FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
+       (EXTRACT(MONTH FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) between 7 and 12 then 'orange'
+                        when  (EXTRACT(YEAR FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(YEAR FROM CURRENT_DATE)) * 12 +
+       (EXTRACT(MONTH FROM trazabilidad_mantenciones.vencimiento) - EXTRACT(MONTH FROM CURRENT_DATE)) <= 6 then 'red;color:#fff' 
+                        else 'green;color:#fff'
+                    end as color")
+            )->orderBy('trazabilidad_mantenciones.vencimiento', 'DESC')->get();
+
+
+        return view('trazabilidad.vencimientos_cliente', compact('vencimientos', 'mantenciones'));
     }
 
     public function cambiar_estado($id)
@@ -482,10 +561,18 @@ class TrazabilidadController extends Controller
 
     public function pdf()
     {
-        $regiones = Regiones::get();
 
-        $data = ['regiones' => $regiones];
-        $pdf = Pdf::loadView('pdf.test', $data);
+        $productos = Productos::join('marcas', 'marcas.id', 'productos.id_marca')
+            ->join('modelos', 'modelos.id', 'productos.id_modelo')
+            ->join('tipo_productos', 'tipo_productos.id', 'productos.id_tipo_producto')
+            ->select(
+                'productos.*',
+                DB::raw("marcas.nombre as marca"),
+                DB::raw("modelos.nombre as modelo"),
+                DB::raw("tipo_productos.nombre as tipo_producto"),
+                DB::raw("'<img src=\"' || productos.ruta || '\" style=\"width:100px;\" />' as imagen")
+            )
+            ->get();
 
         $tMensaje = "<h3>Estimado/a </h3><p>Adjunto encontrará</p><br/>Saludos<br/></p>";
 
@@ -496,16 +583,27 @@ class TrazabilidadController extends Controller
         $data["body"] = $tMensaje;
         $data["fecha"] = $fechaActual;
         $data["id"] = 2;
+        $data["productos"] = $productos;
+
 
         //dd($data);
 
-        Mail::send('pdf.test', $data, function ($message) use ($data, $pdf) {
-            $message->to($data["email"], $data["email"])
-                ->subject($data["title"])
-                ->attachData($pdf->output(), 'docto_' . $data["fecha"] . '_' . $data["id"] . '.pdf');
-        });
+        // Mail::send('pdf.test', $data, function ($message) use ($data, $pdf) {
+        //     $message->to($data["email"], $data["email"])
+        //         ->subject($data["title"])
+        //         ->attachData($pdf->output(), 'docto_' . $data["fecha"] . '_' . $data["id"] . '.pdf');
+        // });
 
+        //return view('pdf.test', $data);
+        $pdf = Pdf::loadView('pdf.test', $data);
+        $pdf->setPaper('A4', 'portrait');
 
-        //return $pdf->stream();
+        // Renderiza el PDF para obtener el número total de páginas
+        $pdf->render();
+
+        // Ahora actualiza los números de página
+        $canvas = $pdf->getDomPDF()->getCanvas();
+        $canvas->page_text(520, 820, "Página {PAGE_NUM}/{PAGE_COUNT}", null, 10, array(0, 0, 0));
+        return $pdf->stream();
     }
 }

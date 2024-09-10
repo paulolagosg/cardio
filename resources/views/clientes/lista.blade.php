@@ -69,7 +69,9 @@
                     <td class="text-left">{{$d->direccion}}</td>
                     <td class="text-right">{{$d->telefono}}</td>
                     <td class="text-right">{{$d->correo}}</td>
-                    <td class="text-center"><a href="/clientes/editar/{{$d->slug}}"><i class="fa fa-edit text-dark" data-toggle="tooltip" data-placement="top" title="Modificar"></i></a>&nbsp;
+                    <td class="text-center">
+                        <a href="/trazabilidad/clientes/{{$d->slug}}"><i class="fa fa-exclamation-triangle text-dark" data-toggle="tooltip" data-placement="top" title="Ver Vencimientos"></i></a>&nbsp;
+                        <a href="/clientes/editar/{{$d->slug}}"><i class="fa fa-edit text-dark" data-toggle="tooltip" data-placement="top" title="Modificar"></i></a>&nbsp;
                         <a href="#" onclick="eliminar('/clientes/eliminar/',{{$d->id}})"><i class="fa fa-trash text-danger" data-toggle="tooltip" data-placement="top" title="Eliminar"></i></a>
                     </td>
                 </tr>
@@ -126,7 +128,7 @@
                 }
             },
             initComplete: function() {
-                this.api().columns([0, 1, 2, 3, 4, 5, 6, 7]).every(function() {
+                this.api().columns([0, 1, 2, 3, 4, 5, 6, 7, 8]).every(function() {
                     var that = this;
                     var input = $('<input size="10" type="text" placeholder="Buscar.." />')
                         .appendTo($(this.header()).empty())
@@ -138,7 +140,7 @@
                             }
                         });
                 });
-                this.api().columns(8).every(function() {
+                this.api().columns(9).every(function() {
                     var that = this;
                     var input = $('')
                         .appendTo($(this.header()).empty())

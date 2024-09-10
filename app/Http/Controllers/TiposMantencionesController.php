@@ -73,7 +73,11 @@ class TiposMantencionesController extends Controller
     {
         $datos = TiposMantenciones::findOrFail($id);
 
-        $deleted = DB::table('tipos_mantenciones')->where('id', $id)->delete();
+        //$deleted = DB::table('tipos_mantenciones')->where('id', $id)->delete();
+
+        $actualizar = DB::table('tipos_mantenciones')
+            ->where('id', $id)
+            ->update(['estado' => 0]);
 
         session()->flash('message', 'Registro eliminado correctamente.');
         return Redirect::back();

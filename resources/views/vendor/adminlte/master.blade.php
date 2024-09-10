@@ -91,6 +91,7 @@
     @endif
     <script src="/vendor/adminlte/dist/js/functions.js"></script>
     <script src="//cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/vendor/adminlte/dist/js/jquery.rut.js"></script>
 
     {{-- Extra Configured Plugins Scripts --}}
     @include('adminlte::plugins', ['type' => 'js'])
