@@ -55,18 +55,25 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="nombre">Ubicación Exacta del Equipo</label> <label class="obligatorio">*</label>
                                         <input class="form-control" type="text" id="ubicacion" name="ubicacion" value="" required />
                                         <span id="error_ubicacion" class="error">Debe ingresar una ubicación</span>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="nombre">Número de Serie</label> <label class="obligatorio">*</label>
                                         <input class="form-control" type="text" id="numero_serie" name="numero_serie" value="" required />
                                         <span id="error_serie" class="error">Debe ingresar un numero de serie</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="nombre">Factura Asociada</label>
+                                        <input class="form-control" type="text" id="factura" name="factura" value="" />
+                                        <span id="error_factura" class="error">Debe ingresar un numero de factura</span>
                                     </div>
                                 </div>
                             </div>

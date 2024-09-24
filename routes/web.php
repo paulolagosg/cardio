@@ -1,14 +1,18 @@
 <?php
 
+use App\Http\Controllers\AlumnosController;
 use App\Http\Controllers\BancosController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\CotizacionesController;
+use App\Http\Controllers\CursosController;
 use App\Http\Controllers\EmpresasController;
 use App\Http\Controllers\EstadosCotizacionesController;
 use App\Http\Controllers\EstadosMantencionesController;
 use App\Http\Controllers\EstadosVencimientosController;
+use App\Http\Controllers\ExcelImportController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MarcasController;
+use App\Http\Controllers\ModalidadesController;
 use App\Http\Controllers\ModelosController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\PlazosPagosController;
@@ -22,6 +26,7 @@ use App\Http\Controllers\TiposTransportesController;
 use App\Http\Controllers\TrazabilidadController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\VencimientosController;
+use App\Http\Controllers\VersionesController;
 use App\Http\Middleware\CheckUsuarioActivo;
 use App\Models\TiposTransportes;
 use Illuminate\Support\Facades\Auth;
@@ -117,18 +122,24 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/trazabilidad/editar/{id}', [TrazabilidadController::class, 'editar'])->name('trazabilidad.editar');
     Route::post('/trazabilidad/actualizar', [TrazabilidadController::class, 'actualizar'])->name('trazabilidad.actualizar');
     Route::get('/trazabilidad/eliminar/{id}', [TrazabilidadController::class, 'eliminar'])->name('trazabilidad.eliminar');
+    Route::get('/trazabilidad/eliminar_mantencion/{id}', [TrazabilidadController::class, 'eliminar_mantencion'])->name('trazabilidad.eliminar_mantencion');
     Route::get('/trazabilidad/dispositivos/{id}', [TrazabilidadController::class, 'obtener_dispositivos'])->name('trazabilidad.dispositivos');
-    Route::get('/trazabilidad/cambiar_estado/{id}', [TrazabilidadController::class, 'cambiar_estado'])->name('trazabilidad.cambiar_estado');
-    Route::get('/trazabilidad/cambiar_estado_mantencion/{id}', [TrazabilidadController::class, 'cambiar_estado_mantencion'])->name('trazabilidad.cambiar_estado_mantencion');
+    Route::get('/trazabilidad/cambiar_estado/{id}/{estado}', [TrazabilidadController::class, 'cambiar_estado'])->name('trazabilidad.cambiar_estado');
+    Route::get('/trazabilidad/cambiar_estado_mantencion/{id}/{estado}', [TrazabilidadController::class, 'cambiar_estado_mantencion'])->name('trazabilidad.cambiar_estado_mantencion');
     Route::post('/trazabilidad/guardar_dispositivo', [TrazabilidadController::class, 'guardar_dispositivo'])->name('trazabilidad.guardar_dispositivo');
+    Route::post('/trazabilidad/guardar_vencimiento', [TrazabilidadController::class, 'guardar_vencimiento'])->name('trazabilidad.guardar_vencimiento');
     Route::post('/trazabilidad/guardar_mantencion', [TrazabilidadController::class, 'guardar_mantencion'])->name('trazabilidad.guardar_mantencion');
+    Route::post('/trazabilidad/guardar_mantencion_editar', [TrazabilidadController::class, 'guardar_mantencion_editar'])->name('trazabilidad.guardar_mantencion_editar');
     Route::get('/trazabilidad/vencimientos/{meses?}', [TrazabilidadController::class, 'vencimientos'])->name('trazabilidad.vencimientos');
+    Route::get('/trazabilidad/mantenciones/{meses?}', [TrazabilidadController::class, 'mantenciones'])->name('trazabilidad.mantenciones');
+    Route::get('/trazabilidad/vencimientos_panel/{meses?}', [TrazabilidadController::class, 'vencimientos_panel'])->name('trazabilidad.vencimientos_panel');
+    Route::post('/trazabilidad/vencimientos_editar/', [TrazabilidadController::class, 'vencimientos_editar'])->name('trazabilidad.vencimientos_editar');
     Route::get('/trazabilidad/clientes/{cliente}', [TrazabilidadController::class, 'clientes'])->name('trazabilidad.clientes');
+    Route::get('/trazabilidad/obtener_vencimiento/{id}', [TrazabilidadController::class, 'obtener_vencimiento'])->name('trazabilidad.obtener_vencimiento');
+    Route::get('/trazabilidad/obtener_mantencion/{id}', [TrazabilidadController::class, 'obtener_mantencion'])->name('trazabilidad.obtener_mantencion');
 
     Route::get('/pdf', [TrazabilidadController::class, 'pdf'])->name('trazabilidad.pdf');
 
-    //enviar correo con alertas
-    Route::get('alertas/enviar_correo', [HomeController::class, 'enviar_correo'])->name('alertas.enviar_correo');
 
     //perfil de usuario
     Route::get('perfil/ver/{id?}', [PerfilController::class, 'index'])->name('perfil.ver');
@@ -136,7 +147,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     /*** inicio cotizaciones */
-    /*
+
     Route::get('/bancos/lista', [BancosController::class, 'index'])->name('bancos.index');
     Route::get('/bancos/agregar', [BancosController::class, 'agregar'])->name('bancos.agregar');
     Route::post('/bancos/crear', [BancosController::class, 'agregar_guardar'])->name('bancos.crear');
@@ -209,8 +220,54 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/estados_cotizaciones/editar/{id}', [EstadosCotizacionesController::class, 'editar'])->name('estados_cotizaciones.editar');
     Route::post('/estados_cotizaciones/actualizar', [EstadosCotizacionesController::class, 'actualizar'])->name('estados_cotizaciones.actualizar');
     Route::get('/estados_cotizaciones/eliminar/{id}', [EstadosCotizacionesController::class, 'eliminar'])->name('estados_cotizaciones.eliminar');
-    */
+
     /*** fin cotizaciones */
+
+    /*** certificados ****/
+    Route::get('/cursos/lista', [CursosController::class, 'index'])->name('cursos.index');
+    Route::get('/cursos/agregar', [CursosController::class, 'agregar'])->name('cursos.agregar');
+    Route::post('/cursos/crear', [CursosController::class, 'agregar_guardar'])->name('cursos.crear');
+    Route::get('/cursos/editar/{id}', [CursosController::class, 'editar'])->name('cursos.editar');
+    Route::post('/cursos/actualizar', [CursosController::class, 'actualizar'])->name('cursos.actualizar');
+    Route::get('/cursos/eliminar/{id}', [CursosController::class, 'eliminar'])->name('cursos.eliminar');
+    Route::get('cursos/importar_curso', [ExcelImportController::class, 'index']);
+    Route::post('import-excel-csv-file', [ExcelImportController::class, 'importExcelCSV']);
+    Route::post('importar_version', [ExcelImportController::class, 'importar_version']);
+    Route::post('importar_alumno', [ExcelImportController::class, 'importar_alumno']);
+    // Route::get('export-excel-csv-file', [ExcelImportController::class, 'exportExcelCSV']);
+    // Route::get('download-import-template', [ExcelImportController::class, 'downloadImportTemplate']);
+
+    Route::get('/modalidades/lista', [ModalidadesController::class, 'index'])->name('modalidades.index');
+    Route::get('/modalidades/agregar', [ModalidadesController::class, 'agregar'])->name('modalidades.agregar');
+    Route::post('/modalidades/crear', [ModalidadesController::class, 'agregar_guardar'])->name('modalidades.crear');
+    Route::get('/modalidades/editar/{id}', [ModalidadesController::class, 'editar'])->name('modalidades.editar');
+    Route::post('/modalidades/actualizar', [ModalidadesController::class, 'actualizar'])->name('modalidades.actualizar');
+    Route::get('/modalidades/eliminar/{id}', [ModalidadesController::class, 'eliminar'])->name('modalidades.eliminar');
+
+    Route::get('/versiones/lista', [VersionesController::class, 'index'])->name('versiones.index');
+    Route::get('/versiones/agregar', [VersionesController::class, 'agregar'])->name('versiones.agregar');
+    Route::post('/versiones/crear', [VersionesController::class, 'agregar_guardar'])->name('versiones.crear');
+    Route::get('/versiones/editar/{id}', [VersionesController::class, 'editar'])->name('versiones.editar');
+    Route::post('/versiones/actualizar', [VersionesController::class, 'actualizar'])->name('versiones.actualizar');
+    Route::get('/versiones/eliminar/{id}', [VersionesController::class, 'eliminar'])->name('versiones.eliminar');
+
+    Route::get('/alumnos/lista', [AlumnosController::class, 'index'])->name('alumnos.index');
+    Route::get('/alumnos/agregar', [AlumnosController::class, 'agregar'])->name('alumnos.agregar');
+    Route::post('/alumnos/crear', [AlumnosController::class, 'agregar_guardar'])->name('alumnos.crear');
+    Route::get('/alumnos/editar/{id}', [AlumnosController::class, 'editar'])->name('alumnos.editar');
+    Route::post('/alumnos/actualizar', [AlumnosController::class, 'actualizar'])->name('alumnos.actualizar');
+    Route::get('/alumnos/eliminar/{id}', [AlumnosController::class, 'eliminar'])->name('alumnos.eliminar');
+    Route::get('/alumnos/certificado/{id}', [AlumnosController::class, 'certificado'])->name('alumnos.certificado');
+    Route::get('/alumnos/ver_certificado/{id}', [AlumnosController::class, 'ver_certificado'])->name('alumnos.ver_certificado');
+    Route::get('/alumnos/comprimir_certificados/{id}', [AlumnosController::class, 'comprimir_certificados'])->name('alumnos.comprimir_certificados');
+    Route::get('/alumnos/enviar_certificados/{id}', [AlumnosController::class, 'enviar_certificados'])->name('alumnos.enviar_certificados');
+    Route::get('/alumnos/enviar_certificado_alumno/{id}', [AlumnosController::class, 'enviar_certificado_alumno'])->name('alumnos.enviar_certificado_alumno');
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+//enviar correo con alertas
+Route::get('alertas/enviar_correo', [HomeController::class, 'enviar_correo'])->name('alertas.enviar_correo');
+//validar certificado
+Route::get('/alumnos/validar_certificado/{hash}', [AlumnosController::class, 'validar_certificado'])->name('alumnos.validar_certificado');

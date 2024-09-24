@@ -6,9 +6,9 @@
 <span class="text-xl text-bold text-dark">Trazabilidad</span> <span> Modificar</span>
 @stop
 @section('content')
-
 <div class="card  card-dark">
     <div class="card-body">
+
         <div class="row">
             @if ($errors->any())
             <div class="alert alert-danger">
@@ -67,18 +67,25 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="nombre">Ubicación Exacta del Equipo</label> <label class="obligatorio">*</label>
                                         <input class="form-control" type="text" id="ubicacion" name="ubicacion" value="{{$datos->ubicacion}}" />
                                         <span id="error_giro" class="error">Debe ingresar una ubicación</span>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="nombre">Número de Serie</label> <label class="obligatorio">*</label>
                                         <input class="form-control" type="text" id="numero_serie" name="numero_serie" value="{{$datos->numero_serie}}" disabled />
                                         <span id="error_giro" class="error">Debe ingresar un numero de serie</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="nombre">Factura Asociada</label>
+                                        <input class="form-control" type="text" id="factura" name="factura" value="{{$datos->factura}}" />
+                                        <span id="error_factura" class="error">Debe ingresar un numero de factura</span>
                                     </div>
                                 </div>
                             </div>
@@ -269,7 +276,7 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-right">
-                    <button type="button" onclick="agregar_dispositivo()" class="btn btn-success"><i class="fa fa-save"></i> Agregar</button>
+                    <button type="button" id="btn-agregar-suministro" onclick="agregar_dispositivo()" class="btn btn-success"><i class="fa fa-save"></i> Agregar</button>
                     <button type="button" class="btn bg-dark" data-dismiss="modal"><i class="fa fa-ban"></i> Cerrar</button>
                 </div>
             </form>
@@ -375,8 +382,8 @@
         $('#id_cliente').trigger('change');
         $('#id_producto').val($('#id_producto_bd').val()); // Select the option with a value of '1'
         $('#id_producto').trigger('change');
-        $('.alert-success').fadeIn().delay(3000).fadeOut();
-        $('.alert-danger').fadeIn().delay(3000).fadeOut();
+        // $('.alert-success').fadeIn().delay(3000).fadeOut();
+        // $('.alert-danger').fadeIn().delay(3000).fadeOut();
 
         $('#tablaDispositivos').DataTable({
             language: {

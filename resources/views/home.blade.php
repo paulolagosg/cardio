@@ -22,7 +22,7 @@
                 <div class="icon">
                     <i class="ion ion-person-add"></i>
                 </div>
-                <a href="{{route('trazabilidad.vencimientos',6)}}" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{route('trazabilidad.vencimientos_panel',6)}}" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <div class="col-4">
@@ -35,7 +35,7 @@
                 <div class="icon">
                     <i class="ion ion-bag"></i>
                 </div>
-                <a href="{{route('trazabilidad.vencimientos',3)}}" class="small-box-footer">Mas información<i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{route('trazabilidad.vencimientos_panel',3)}}" class="small-box-footer">Mas información<i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <div class="col-4">
@@ -48,7 +48,7 @@
                 <div class="icon">
                     <i class="ion ion-pie-graph"></i>
                 </div>
-                <a href="{{route('trazabilidad.vencimientos',1)}}" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{route('trazabilidad.vencimientos_panel',1)}}" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
 
@@ -68,7 +68,7 @@
                     <i class="ion ion-person-add"></i>
                 </div>
                 @if($mantenciones->anual > 0)
-                <a href="{{route('trazabilidad.vencimientos','a')}}" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{route('trazabilidad.mantenciones','a')}}" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
                 @else
                 <a href="#" onclick="alert('No hay información para mostrar')" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
                 @endif
@@ -85,7 +85,7 @@
                     <i class="ion ion-person-add"></i>
                 </div>
                 @if($mantenciones->sem > 0)
-                <a href="{{route('trazabilidad.vencimientos','s')}}" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{route('trazabilidad.mantenciones','s')}}" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
                 @else
                 <a href="#" onclick="alert('No hay información para mostrar')" class="small-box-footer">Mas información <i class="fas fa-arrow-circle-right"></i></a>
                 @endif
@@ -108,19 +108,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="row">
-                <div class="col-12">
-                    <p>&nbsp;</p>
-                </div>
-            </div> -->
-            <!-- <div class="row">
-                <div class="col-6">
-                    <div style="height:70vh;;width:100%;">
-                        <h4 class="text-center">Clientes por Rubro</h4>
-                        <canvas id="grubros"></canvas>
-                    </div>
-                </div>
-            </div> -->
         </div>
     </div>
     <div class="card d-block d-sm-none table-responsive">

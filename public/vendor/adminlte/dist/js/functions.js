@@ -81,6 +81,57 @@ function validarNumerico(valor) {
   return regex.test(valor);
 }
 
+
+function validarFecha(fecha) {
+  // Expresión regular para formato dd/mm/yyyy
+  var regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+
+  // Verificar si la fecha cumple con el formato
+  if (!regex.test(fecha)) {
+      return false;
+  }
+
+  // Separar día, mes y año
+  var partes = fecha.split('/');
+  var dia = parseInt(partes[0], 10);
+  var mes = parseInt(partes[1], 10);
+  var anio = parseInt(partes[2], 10);
+
+  // Crear un objeto de fecha en formato yyyy-mm-dd
+  var fechaObj = new Date(anio, mes - 1, dia);
+
+  // Validar que la fecha sea válida (el objeto Date ajusta automáticamente fechas no válidas)
+  return fechaObj.getFullYear() === anio && (fechaObj.getMonth() + 1) === mes && fechaObj.getDate() === dia;
+}
+
+function validarDecimal(numero) {
+  // Expresión regular para validar un número decimal
+  const regex = /^[+-]?(\d*\.\d+|\d+\.\d*)$/;
+  
+  // Verifica si el número coincide con la expresión regular
+  if (regex.test(numero)) {
+      return true;
+  } else {
+      return false;
+  }
+}
+
+function validarDecimalSimple(numero) {
+  // Expresión regular para validar un número con 1 dígito en la parte entera y 1 dígito en la parte decimal
+  //const regex = /^[+-]?\d\.\d$/;
+  const valorNumerico = parseFloat(numero);
+    
+    // Expresión regular para validar que el número tiene 1 dígito en la parte entera y 1 en la parte decimal
+    const regex = /^\d\.\d$/;
+    
+    // Verificar que el número cumpla con el formato y esté dentro del rango
+    if (regex.test(numero) && valorNumerico >= 1.0 && valorNumerico <= 7.0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function validar_cliente(){
   $('#error_rut').hide();
   $('#error_rut_val').hide();
@@ -404,6 +455,53 @@ $('#fClientes').on('click', '.editar_secundario', function (ists) {
   $('#id_contacto').val(json.id);
 });
 
+
+function modal_vencimiento(nID){
+  $('#modal-vencimiento').modal('show');
+  $.ajax({
+    type: 'GET',
+    url: '/trazabilidad/obtener_vencimiento/' + nID,
+    success: function(data) {
+        console.log(data);
+        $('#id_tipo_producto').val(data[0].id_tipo_producto);
+        $('#id_tipo_producto').trigger('change');
+        setTimeout(function(){
+          $('#id_producto_d').val(data[0].id_producto);
+          $('#id_producto_d').trigger('change');
+        }, 1000);
+        $('#lote').val(data[0].lote);
+        $('#vencimiento').val(data[0].vencimiento);
+        $('#guia').val(data[0].guia_despacho);
+        $('#factura').val(data[0].factura);
+        $('#id_trazabilidad_producto').val(nID);
+    }
+  });
+}
+
+function modal_mantencion(nID){
+  $('#modal-editar_mp').modal('show');
+  $.ajax({
+    type: 'GET',
+    url: '/trazabilidad/obtener_mantencion/' + nID,
+    success: function(data) {
+        console.log(data);
+        $('#id_tipo_producto').val(data[0].id_tipo_producto);
+        $('#id_tipo_producto').trigger('change');
+        setTimeout(function(){
+          $('#id_tipo_mantencion').val(data[0].id_tipo_mantencion);
+          $('#id_tipo_mantencion').trigger('change');
+        }, 1000);
+        $('#lote').val(data[0].lote);
+        $('#fecha_mantencion').val(data[0].vencimiento);
+        $('#guia_m').val(data[0].guia_despacho);
+        $('#factura_m').val(data[0].factura);
+        $('#id_trazabilidad_mantencion').val(nID);
+    }
+  });
+}
+
+//
+
 function obtener_productos(nID){
   $("#id_producto_d").empty();
   $.ajax({
@@ -443,6 +541,7 @@ function trazabilidad_con_cliente(){
   let ubicacion = $('#ubicacion').val();
   let serie = $('#numero_serie').val();
   let cliente = $('#id_cliente').val();
+  let factura = $('#factura').val();
   let mensajes = 0;
 
   if(cliente == ""){
@@ -481,6 +580,7 @@ function trazabilidad_cliente(){
   $('#error_dea').hide();
   $('#error_ubicacion').hide();
   $('#error_serie').hide();
+  $('#error_factura').hide();
 
   let rut = $('#rut').val();
   let nombre = $('#nombre').val();
@@ -494,6 +594,7 @@ function trazabilidad_cliente(){
   let dea = $('#id_producto').val();
   let ubicacion = $('#ubicacion').val();
   let serie = $('#numero_serie').val();
+  let factura = $('#factura').val();
 
   if(nombre == ""){
     mensajes++;
@@ -553,6 +654,10 @@ function trazabilidad_cliente(){
   if($('#telefono').val() != "" && !validarNumerico($('#telefono').val())){
     mensajes++;
     $('#error_telefono').show();
+  }
+  if(factura != "" && !validarNumerico(factura)){
+    mensajes++;
+    $('#error_factura').show();
   }
 
   if(mensajes == 0){
@@ -670,7 +775,77 @@ function guardar_mantencion(){
     });
   }
 }
+
+
 function agregar_dispositivo(){
+  $('#btn-agregar-suministro').hide();
+  var data = {
+    id_tipo_producto: $('#id_tipo_producto').val(),
+    id_trazabilidad: $('#id_trazabilidad').val(),
+    id_producto: $('#id_producto_d').val(),
+    lote: $('#lote').val(),
+    vencimiento: $('#vencimiento').val(),
+    guia: $('#guia').val(),
+    factura: $('#factura').val(),
+    _token: $('#id_token').val(),
+  };
+  $('#error_tproducto_modal').hide();
+  $('#error_suministro_modal').hide();
+  $('#error_lote_modal').hide();
+  $('#error_vencimiento_modal').hide();
+  let errores = 0;
+  if($('#id_tipo_producto').val() == ""){
+    errores++;
+    $('#error_tproducto_modal').show();
+  }
+  if($('#id_producto_d').val() == ""){
+    errores++;
+    $('#error_suministro_modal').show();
+  }
+  if($('#lote').val() == ""){
+    errores++;
+    $('#error_lote_modal').show();
+  }
+  if($('#vencimiento').val() == ""){
+    errores++;
+    $('#error_vencimiento_modal').show();
+  }
+
+    if(errores == 0){
+        $.ajax({
+            type: "post",
+            url: "/trazabilidad/guardar_dispositivo",
+            data: data,
+            success: function(data) {
+                let error = data.split("error");
+                if (error[1]) {
+                    $('#msgError').show();
+                    $('#msgError').html(error[1]);
+                    $('.alert-danger').fadeIn().delay(3000).fadeOut();
+                } else {
+                    let OK = data.split("OK");
+                    if (OK[1]) {
+                      $('#id_tipo_producto').val(null).trigger('change');
+                      $('#id_producto_d').val(null).trigger('change');
+                      $('#lote').val('');
+                      $('#vencimiento').val('');
+                      $('#guia').val('');
+                      $('#factura').val('');
+                      $('#msgOK').show();
+                      $('#msgOK').html(OK[1]);
+                      $('.alert-success').fadeIn().delay(3000).fadeOut();
+                    }
+                }
+                $('#btn-agregar-suministro').show();
+            }
+        });
+    }
+    else{
+      $('#btn-agregar-suministro').show();
+    }
+}
+function guardar_dispositivo(){
+  
   var data = {
     id_tipo_producto: $('#id_tipo_producto').val(),
     id_trazabilidad: $('#id_trazabilidad').val(),
@@ -779,7 +954,7 @@ function activaTab(tab){
 };
 
 
-function cambiar_estado(url,id) {
+function cambiar_estado(url,id,estado) {
   Swal.fire({
       title: 'Cambiar Estado',
       text: "¿Está seguro(a) que desea cambiar el estado del registro?",
@@ -790,7 +965,7 @@ function cambiar_estado(url,id) {
       confirmButtonText: 'Aceptar'
   }).then((result) => {
       if (result.value == true) {
-          window.location.href = url  +'/'+ id
+          window.location.href = url  +'/'+ id+'/'+estado
       }
   })
 }
@@ -815,4 +990,298 @@ function formatoPesos({ currency, value}) {
     currency
   }) 
   return formatter.format(value)
+}
+
+function guardar_vencimiento(){
+  var data = {
+    id_tipo_producto: $('#id_tipo_producto').val(),
+    id_trazabilidad_producto: $('#id_trazabilidad_producto').val(),
+    id_producto: $('#id_producto_d').val(),
+    lote: $('#lote').val(),
+    vencimiento: $('#vencimiento').val(),
+    guia: $('#guia').val(),
+    factura: $('#factura').val(),
+    _token: $('#id_token').val(),
+  };
+  $('#error_tproducto_modal').hide();
+  $('#error_suministro_modal').hide();
+  $('#error_lote_modal').hide();
+  $('#error_vencimiento_modal').hide();
+  let errores = 0;
+  if($('#id_tipo_producto').val() == ""){
+    errores++;
+    $('#error_tproducto_modal').show();
+  }
+  if($('#id_producto_d').val() == ""){
+    errores++;
+    $('#error_suministro_modal').show();
+  }
+  if($('#lote').val() == ""){
+    errores++;
+    $('#error_lote_modal').show();
+  }
+  if($('#vencimiento').val() == ""){
+    errores++;
+    $('#error_vencimiento_modal').show();
+  }
+
+    if(errores == 0){
+        $.ajax({
+            type: "post",
+            url: "/trazabilidad/guardar_vencimiento",
+            data: data,
+            success: function(data) {
+                let error = data.split("error");
+                if (error[1]) {
+                    $('#msgError').show();
+                    $('#msgError').html(error[1]);
+                    $('.alert-danger').fadeIn().delay(3000).fadeOut();
+                } else {
+                    let OK = data.split("OK");
+                    if (OK[1]) {
+                      $('#msgOK').html(OK[1]);
+                      $('.alert-success').fadeIn().delay(3000).fadeOut();
+                    }
+                }
+            }
+        });
+    }
+}
+
+function guardar_mantencion_editar(){
+  var data = {
+    id_tipo_mantencion: $('#id_tipo_mantencion').val(),
+    id_trazabilidad_mantencion: $('#id_trazabilidad_mantencion').val(),
+    fecha_mantencion: $('#fecha_mantencion').val(),
+    guia_despacho: $('#guia_m').val(),
+    factura: $('#factura_m').val(),
+    _token: $('#id_token_mp').val(),
+  };
+  $('#error_tipo_mantencion_modal').hide();
+  $('#error_fmantencion_modal').hide();
+  let errores = 0;
+  if($('#fecha_mantencion').val() == ""){
+    errores++;
+    $('#error_fmantencion_modal').show();
+  }
+  if($('#id_tipo_mantencion').val() == ""){
+    errores++;
+    $('#error_tipo_mantencion_modal').show();
+  }
+
+  if(errores == 0){
+    $.ajax({
+        type: "post",
+        url: "/trazabilidad/guardar_mantencion_editar",
+        data: data,
+        success: function(data) {
+            let error = data.split("error");
+            if (error[1]) {
+                $('#msgErrorM').show();
+                $('#msgErrorM').html(error[1]);
+                $('.alert-danger').fadeIn().delay(3000).fadeOut();
+            } else {
+                let OK = data.split("OK");
+                if (OK[1]) {
+                  $('#msgOKM').html(OK[1]);
+                  $('.alert-success').fadeIn().delay(3000).fadeOut();
+                }
+            }
+        }
+    });
+  }
+}
+
+function importarCursos(input) {
+  document.getElementById('fCursos').submit();
+}
+
+function importarVersiones(input) {
+  document.getElementById('fVersiones').submit();
+}
+
+function importarAlumnos(input) {
+  document.getElementById('fAlumnos').submit();
+}
+
+
+function validar_version(){
+  $('#error_nombre').hide();
+  $('#error_cliente').hide();
+  $('#error_curso').hide();
+  $('#error_modalidad').hide();
+  $('#error_fecha').hide();
+  $('#error_instructor').hide();
+  $('#error_horas').hide();
+  $('#error_firmante').hide();
+  $('#error_firma').hide();
+  $('#error_rut').hide();
+  $('#error_contraparte').hide();
+  $('#error_correo').hide();
+  $('#error_telefono').hide();
+
+  let nombre = $('#nombre').val();
+  let cliente = $('#id_cliente').val();
+  let curso = $('#id_curso').val();
+  let modalidad = $('#id_modalidad').val();
+  let fecha = $('#fecha_curso').val();
+  let instructor = $('#id_usuario_instructor').val();
+  let horas = $('#horas').val();
+  let firmante = $('#id_usuario_firmante').val();
+  let firma = $('#firma').val();
+  let rut = $('#rut').val();
+  let contraparte = $('#contraparte').val();
+  let telefono = $('#telefono').val();
+  let correo = $('#correo_electronico').val();
+  let mensajes = 0;
+
+  if(nombre == ""){
+    mensajes++;
+    $('#error_nombre').show();
+  }
+  if(cliente == ""){
+    mensajes++;
+    $('#error_cliente').show();
+  }
+  if(curso == ""){
+    mensajes++;
+    $('#error_curso').show();
+  }
+  if(modalidad == ""){
+    mensajes++;
+    $('#error_modalidad').show();
+  }
+  if(fecha==""){
+    mensajes++;
+    $('#error_fecha').show();
+  }
+  if(instructor == ""){
+    mensajes++;
+    $('#error_instructor').show();
+  }
+  if(!validarNumerico(horas)){
+    mensajes++;
+    $('#error_horas').show();
+  }
+  if(firmante == ""){
+    mensajes++;
+    $('#error_firmante').show();
+  }
+  // if(firma == ""){
+  //   mensajes++;
+  //   $('#error_firma').show();
+  // }
+  if(!validarRut(rut)){
+    mensajes++;
+    $('#error_rut').show();
+  }
+
+  if(contraparte == ""){
+    mensajes++;
+    $('#error_contraparte').show();
+  }
+
+  if(!validarNumerico(telefono)){
+    mensajes++;
+    $('#error_telefono').show();
+  }
+
+  if(!validarCorreoElectronico(correo)){
+    mensajes++;
+    $('#error_correo').show();
+  }
+
+  if(mensajes == 0){
+    console.log("OK");
+    $('#fVersiones').submit();
+  }
+}
+
+function validar_alumno(){
+  $('#error_curso').hide();
+  $('#error_rut').hide();
+  $('#error_nombre').hide();
+  $('#error_correo').hide();
+  $('#error_nota').hide();
+  $('#error_asistencia').hide();
+
+  let curso = $('#id_version').val();
+  let nombre = $('#nombre').val();
+  let rut = $('#rut').val();
+  let correo = $('#correo_electronico').val();
+  let nota = $('#nota').val();
+  let asistencia = $('#asistencia').val();
+
+  let mensajes = 0;
+
+  if(curso == ""){
+    mensajes++;
+    $('#error_curso').show();
+  }
+  if(!validarRut(rut)){
+    mensajes++;
+    $('#error_rut').show();
+  }
+  if(nombre == ""){
+    mensajes++;
+    $('#error_nombre').show();
+  }
+  if(!validarCorreoElectronico(correo)){
+    mensajes++;
+    $('#error_correo').show();
+  }
+  if(nota != "" && !validarDecimalSimple(nota)){
+    mensajes++;
+    $('#error_nota').show();
+  }
+  if(asistencia != "" && !validarNumerico(asistencia)){
+    mensajes++;
+    $('#error_asistencia').show();
+  }
+  else{
+    if(asistencia > 100 || asistencia < 0){
+      mensajes++;
+      $('#error_asistencia').show();
+    }
+  }
+
+  
+
+  if(mensajes == 0){
+    console.log("OK");
+    $('#fAlumnos').submit();
+  }
+}
+
+function generar_certificados_version(nID){
+  $('#divProc').show();
+  $.ajax({
+    type: 'GET',
+    url: '/alumnos/comprimir_certificados/' + nID,
+    success: function(data) {
+        location.reload();
+    }
+  });
+}
+
+function enviar_certificados(nID){
+  $('#divProc').show();
+  $.ajax({
+    type: 'GET',
+    url: '/alumnos/enviar_certificados/' + nID,
+    success: function(data) {
+        location.reload();
+    }
+  });
+}
+
+function enviar_certificado_alumno(nID){
+  $('#divProc').show();
+  $.ajax({
+    type: 'GET',
+    url: '/alumnos/enviar_certificado_alumno/' + nID,
+    success: function(data) {
+        location.reload();
+    }
+  });
 }

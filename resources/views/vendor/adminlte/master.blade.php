@@ -75,7 +75,7 @@
 
 </head>
 
-<body class="@yield('classes_body')" @yield('body_data') style="background-image: url(https://www.cardioprotegido.cl/assets/images/rotaid-isp-bg.jpeg);background-size: cover;">
+<body class="@yield('classes_body')" @yield('body_data') style="background-image: url('/logo-portada.jpg');background-size: cover;">
 
     {{-- Body Content --}}
     @yield('body')

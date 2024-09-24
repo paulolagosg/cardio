@@ -368,7 +368,38 @@ return [
                     'url' => '/trazabilidad/vencimientos',
                     'active' => ['regex:@^trazabilidad/vencimientos/[A-Za-z0-9-]+$@'],
                 ],
+                // [
+                //     'text' => 'Mantenciones',
+                //     'icon' => 'fas fa-fw fa-cogs',
+                //     'url' => '/trazabilidad/mantenciones',
+                //     'active' => ['regex:@^trazabilidad/mantenciones/[A-Za-z0-9-]+$@'],
+                // ],
             ],
+        ],
+        [
+            'text' => 'Generador de Certificados',
+            'icon' => 'fas fa-fw fa-graduation-cap',
+            'class' => 'bg-',
+            'submenu' => [
+                [
+                    'text' => 'Cursos',
+                    'url' => 'cursos/lista',
+                    'icon' => 'fas fa-fw fa-book',
+                    'active' => ['cursos/editar', 'cursos/agregar', 'regex:@^cursos/editar/[A-Za-z0-9-]+$@',],
+                ],
+                [
+                    'text' => 'Versiones',
+                    'url' => 'versiones/lista',
+                    'icon' => 'fas fa-fw fa-calendar',
+                    'active' => ['versiones/editar', 'versiones/agregar', 'regex:@^versiones/editar/[A-Za-z0-9- ]+$@',],
+                ],
+                [
+                    'text' => 'Alumnos',
+                    'url' => 'alumnos/lista',
+                    'icon' => 'fas fa-fw fa-users',
+                    'active' => ['alumnos/editar', 'alumnos/agregar', 'regex:@^alumnos/editar/[A-Za-z0-9-]+$@',],
+                ],
+            ]
         ],
         [
             'text' => 'Parametros',

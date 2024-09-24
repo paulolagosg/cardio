@@ -54,7 +54,7 @@ class ClientesController extends Controller
             'nombre' => 'required|max:200',
             'id_region' => 'required'
         ]);
-
+        $aleatoreo = rand(100, 999);
         $nExisteRut = Clientes::where('rut', $request->rut)->count();
         if ($nExisteRut > 0) {
             session()->flash('error', 'El RUT del cliente ya existe.');
@@ -75,7 +75,7 @@ class ClientesController extends Controller
             $clientes->telefono = $request->telefono;
             $clientes->correo = $request->correo;
             $clientes->sitio_web = $request->sitio_web;
-            $clientes->slug = str_slug($request->nombre, '-');
+            $clientes->slug = str_slug($request->nombre . "-" . $aleatoreo, '-');
             $clientes->save();
 
             $id_cliente = $clientes->id;
@@ -273,12 +273,19 @@ class ClientesController extends Controller
     {
         $clientes_comunas = Comunas::join('regiones', 'regiones.id', 'comunas.id_region')
             ->leftJoin('clientes', 'comunas.id', 'clientes.id_comuna')
+            ->leftJoin('trazabilidades as t', 't.id_cliente', 'clientes.id')
             ->groupBy('comunas.nombre')
             ->groupBy('regiones.nombre')
             ->groupBy('comunas.slug')
             ->orderBy('comunas.nombre')
             ->whereRaw("initcap(regiones.nombre) ='" . $region . "'")
-            ->select(DB::raw("count(clientes.id) as total"), DB::raw("comunas.nombre  as comuna"), 'regiones.nombre', 'comunas.slug')
+            ->select(
+                DB::raw("count(distinct clientes.id) as total"),
+                DB::raw("comunas.nombre  as comuna"),
+                DB::raw("count(t.id) as equipos"),
+                'regiones.nombre',
+                'comunas.slug'
+            )
             ->get();
 
         $total_comunas = $clientes_comunas->count();

@@ -9,6 +9,13 @@ class Trazabilidades extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id_cliente','id_producto','numero_serie','slug','estado','created_at','updated_at'
+        'id_cliente',
+        'id_producto',
+        'numero_serie',
+        'slug',
+        'estado',
+        'factura',
+        'created_at',
+        'updated_at'
     ];
 }

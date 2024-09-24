@@ -36,7 +36,7 @@
                     <div class="inner">
                         <h4 class="d-none d-sm-block">{{$c->comuna}}</h4>
                         <h5 class="d-block d-sm-none">{{$c->comuna}}</h5>
-                        <h3>{{$c->total}}</h3>
+                        <h5>Total Clientes {{$c->total}} <br> Total Equipos {{$c->equipos}}</h5>
                     </div>
                     <div class="icon">
                         <i class="ion ion-person-add"></i>
